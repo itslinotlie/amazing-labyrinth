@@ -11,12 +11,13 @@ import java.util.Scanner;
 public class LogicTest {
     public static void main (String[] args) {
         LogicTest x = new LogicTest();
+        //testing the feature
         Scanner in = new Scanner(System.in);
         int val = in.nextInt();
         while(val!=0) {
             x.rotate(val);
             val = in.nextInt();
-        };
+        }
     }
     public TestPanel panel = new TestPanel();
     public LogicTest() {
