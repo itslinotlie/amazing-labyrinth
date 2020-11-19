@@ -26,6 +26,10 @@ public class Deck {
 		Collections.shuffle(deck);
 	}
 
+	public Card getCard() {
+		return(deck.pop());
+	}
+	
 	public Stack<Card> getDeck() {
 		return deck;
 	}
