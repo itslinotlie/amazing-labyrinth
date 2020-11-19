@@ -1,7 +1,7 @@
 package objects;
 
 public class Card {
-	public String item;
+	private String item;
 	
 	public Card(String item) {
 		this.item = item;
