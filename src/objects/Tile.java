@@ -1,10 +1,10 @@
 package objects;
 
 public class Tile {
-	private String type;
+	private String type; // I, L, T
 	private String item;
 	private boolean moveable;
-	private int orientation;
+	private int orientation; // 0 is orientation in the way the letters I, L, T, 1 is 90 rotation clockwise, 2 is 180 rotation clockwise, 3 is 270 rotation clockwise, 4 is 360 rotation clockwise.
 	private int x, y;
 	
 	public Tile(String type, String item, boolean moveable, int orientation, int x, int y) {
