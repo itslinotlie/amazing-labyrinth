@@ -21,6 +21,10 @@ public class BoardShiftTest {
         //p: anything for right/down, - to go left/up
         //c: r to push row, c = to push column
         //n: row/col number to be pushed
+        //Sample i/o:
+        //+ R 1 --> shifts 1st row to the right
+        //- C 2 --> shifts 2nd col up
+        //+ R 8 --> shifts 8th row to the right (didn't include error checking)
         p = in.next().charAt(0); c = in.next().charAt(0); n = in.nextInt();
         while(n!=0) {
             if(p=='-') { //push to the left or up
