@@ -18,9 +18,12 @@ public class BoardShiftTest {
         printArray();
 
         Scanner in = new Scanner(System.in);
+        //p: anything for right/down, - to go left/up
+        //c: r to push row, c = to push column
+        //n: row/col number to be pushed
         p = in.next().charAt(0); c = in.next().charAt(0); n = in.nextInt();
         while(n!=0) {
-            if(p=='-') {
+            if(p=='-') { //push to the left or up
                 for (int i=0;i<mxn;i++) {
                     if(c=='R') a[n][i] = a[n][i+1];
                     else a[i][n] = a[i+1][n];
@@ -32,7 +35,7 @@ public class BoardShiftTest {
                     a[mxn][n] = val;
                     x = 0; y = n; val = a[x][y];
                 }
-            } else {
+            } else { //push to the right or down
                 for (int i=mxn+1;i>=2;i--) {
                     if(c=='R') a[n][i] = a[n][i-1];
                     else a[i][n] = a[i-1][n];
