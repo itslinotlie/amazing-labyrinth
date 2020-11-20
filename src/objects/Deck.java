@@ -13,7 +13,7 @@ public class Deck {
 		Scanner input;
 		
 		try {
-			input = new Scanner(new File("Treasures.txt"));
+			input = new Scanner(new File("res/Treasures.txt"));
 			
 			for (int i = 0; i < 24; i++) {
 				deck.add(new Card(input.next()));
