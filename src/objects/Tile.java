@@ -4,8 +4,9 @@ public class Tile {
 	private String type; // I, L, T
 	private String item;
 	private boolean moveable;
-	private int orientation; // 0 is orientation in the way the letters I, L, T, 1 is 90 rotation clockwise, 2 is 180 rotation clockwise, 3 is 270 rotation clockwise, 4 is 360 rotation clockwise.
+	private int orientation; // 0 is orientation in the way the letters I, L, T, 1 is 90 rotation clockwise, 2 is 180 rotation clockwise, 3 is 270 rotation clockwise.
 	private int x, y;
+	private boolean up, down, left, right;
 	
 	public Tile(String type, String item, boolean moveable, int orientation, int x, int y) {
 		this.type = type;
@@ -14,6 +15,83 @@ public class Tile {
 		this.orientation = orientation;
 		this.x = x;
 		this.y = y;
+		switch(type) {
+		case "I":
+			if (orientation == 0 || orientation == 2) {
+				up = true;
+				down = true;
+			} else {
+				left = true;
+				right = true;
+			} 
+			break;
+		case "L":
+			if (orientation == 0) {
+				up = true;
+				right = true;
+			} else if (orientation == 1) {
+				right = true;
+				down = true;
+			} else if (orientation == 2) {
+				left = true;
+				down = true;
+			} else {
+				left = true;
+				up = true;
+			}
+			break;
+		case "T":
+			if (orientation == 0) {
+				down = true;
+				left = true;
+				right = true;
+			} else if (orientation == 1) {
+				up = true;
+				down = true;
+				left = true;
+			} else if (orientation == 2) {
+				up = true;
+				left = true;
+				right = true;
+			} else {
+				up = true;
+				down = true;
+				right = true;
+			}
+			break;
+		}
+	}
+
+	public boolean isUp() {
+		return up;
+	}
+
+	public void setUp(boolean up) {
+		this.up = up;
+	}
+
+	public boolean isDown() {
+		return down;
+	}
+
+	public void setDown(boolean down) {
+		this.down = down;
+	}
+
+	public boolean isLeft() {
+		return left;
+	}
+
+	public void setLeft(boolean left) {
+		this.left = left;
+	}
+
+	public boolean isRight() {
+		return right;
+	}
+
+	public void setRight(boolean right) {
+		this.right = right;
 	}
 
 	public String getType() {
