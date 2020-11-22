@@ -9,16 +9,6 @@ import java.io.File;
 import java.util.Scanner;
 
 public class RotationTest {
-    public static void main (String[] args) {
-        RotationTest x = new RotationTest();
-        //testing the feature
-        Scanner in = new Scanner(System.in);
-        int val = in.nextInt(); //deg to rotate CW (increments by that amount) in degree
-        while(val!=0) {
-            x.rotate(val);
-            val = in.nextInt();
-        }
-    }
     public TestPanel panel = new TestPanel();
     public RotationTest() {
         JFrame frame = new JFrame("Test");
