@@ -1,150 +1,107 @@
 package objects;
 
-public class Tile {
-	private String type; // I, L, T
-	private String item;
-	private boolean moveable;
-	private int orientation; // 0 is orientation in the way the letters I, L, T, 1 is 90 rotation clockwise, 2 is 180 rotation clockwise, 3 is 270 rotation clockwise.
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+public class Tile extends JLabel {
+	private String item, type, head = new File("").getAbsolutePath()+"/res/images/"; //item: bat, dragon etc | type: I, L, T
+	private boolean moveable; //don't think we need, GUI will do the checking
 	private int x, y;
-	private boolean up, down, left, right;
-	
+	private double angle = 0;
+	private BufferedImage image, copy;
+
+	private boolean move[] = new boolean[4];
+
+	//e.g. I/L/T, Monkey, false (might delete), 0/1/2/3, [1, 7], [1, 7]
 	public Tile(String type, String item, boolean moveable, int orientation, int x, int y) {
 		this.type = type;
 		this.item = item;
 		this.moveable = moveable;
-		this.orientation = orientation;
-		this.x = x;
-		this.y = y;
+		this.x = x; this.y = y;
 		switch(type) {
-		case "I":
-			if (orientation == 0 || orientation == 2) {
-				up = true;
-				down = true;
-			} else {
-				left = true;
-				right = true;
-			} 
-			break;
-		case "L":
-			if (orientation == 0) {
-				up = true;
-				right = true;
-			} else if (orientation == 1) {
-				right = true;
-				down = true;
-			} else if (orientation == 2) {
-				left = true;
-				down = true;
-			} else {
-				left = true;
-				up = true;
-			}
-			break;
-		case "T":
-			if (orientation == 0) {
-				down = true;
-				left = true;
-				right = true;
-			} else if (orientation == 1) {
-				up = true;
-				down = true;
-				left = true;
-			} else if (orientation == 2) {
-				up = true;
-				left = true;
-				right = true;
-			} else {
-				up = true;
-				down = true;
-				right = true;
-			}
-			break;
+			case "I":
+				for (int i=0;i<=2;i+=2) {
+					move[(orientation + i) % 4] = true;
+				} break;
+			case "L":
+				for (int i=0;i<=1;i++) {
+					move[(orientation + i) % 4] = true;
+				} break;
+			case "T":
+				for (int i=1;i<=3;i++) {
+					move[(orientation + i) % 4] = true;
+				} break;
+		}
+
+		try { //loading the images (might need to change Fernande's naming convention (I think the numbers are redundant)
+			image = ImageIO.read(new File(head+type+".png")); //i.e. amazing-labyrinth/res/images/Monkey.png
+			copy = rotateImage(image, 0d);
+		} catch(Exception e) {
+			System.out.println("There was a problem loading the image");
 		}
 	}
-
-	public boolean isUp() {
-		return up;
+	public void rotate(double ang) { //this might have to be transferred to the GUI class
+		for (int i=0;i<ang;i++) {
+			try {
+				Thread.sleep(10);
+				angle+=1;
+				copy = rotateImage(image, angle);
+				repaint();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+	public BufferedImage rotateImage(BufferedImage img, double angle) {
+		double rad = Math.toRadians(angle), sin = Math.abs(Math.sin(rad)), cos = Math.abs(Math.cos(rad));
+		int w = img.getWidth(), h = img.getHeight();
+		//new width and height of the rotated image
+		int nw = (int)Math.floor(w*cos+h*sin), nh = (int)Math.floor(h*cos+w*sin); //implementation is left for the readers
+		BufferedImage rot = new BufferedImage(nw, nh, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = rot.createGraphics();
+		AffineTransform at = new AffineTransform();
+		at.translate((nw-w)/2, (nh-h)/2);
 
-	public void setUp(boolean up) {
-		this.up = up;
+		int x = w/2, y = h/2; //center of rotation
+		at.rotate(rad, x, y);
+		g2d.setTransform(at);
+		g2d.drawImage(image, 0, 0, this);
+		g2d.dispose();
+		return rot; //return the newly rotated BufferedImage
 	}
-
-	public boolean isDown() {
-		return down;
+	@Override
+	public Dimension getPreferredSize() {
+		return image==null? new Dimension(200, 200):new Dimension(image.getWidth(), image.getHeight());
 	}
-
-	public void setDown(boolean down) {
-		this.down = down;
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		if(copy!=null) {
+			Graphics2D g2d = (Graphics2D) g.create();
+			int x = (getWidth()-copy.getWidth())/2;
+			int y = (getHeight()-copy.getHeight())/2;
+			g2d.drawImage(copy, x, y, this);
+			g2d.dispose();
+		}
 	}
-
-	public boolean isLeft() {
-		return left;
-	}
-
-	public void setLeft(boolean left) {
-		this.left = left;
-	}
-
-	public boolean isRight() {
-		return right;
-	}
-
-	public void setRight(boolean right) {
-		this.right = right;
-	}
-
 	public String getType() {
 		return type;
 	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public String getItem() {
 		return item;
 	}
-
-	public void setItem(String item) {
-		this.item = item;
-	}
-
-	public boolean isMoveable() {
-		return moveable;
-	}
-
-	public void setMoveable(boolean moveable) {
-		this.moveable = moveable;
-	}
-
-	public int getOrientation() {
-		return orientation;
-	}
-
-	public void setOrientation(int orientation) {
-		this.orientation = orientation;
-	}
-
 	public int getX() {
 		return x;
 	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-	
 	public int getY() {
 		return y;
 	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
 	@Override
 	public String toString() {
-		return "Tile [type=" + type + ", item=" + item + ", moveable=" + moveable + ", orientation=" + orientation
-				+ ", x=" + x + ", y=" + y + "]";
+		return "Tile [type=" + type + ", item=" + item + ", x=" + x + ", y=" + y + "]";
 	}
 }

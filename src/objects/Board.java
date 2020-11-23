@@ -41,8 +41,7 @@ public class Board {
 					col = (int) (Math.random() * 7 + 1);
 					
 					if (board[row][col] == null) {
-						tile = tiles.pop();
-						board[row][col] = new Tile(tile.getType(), tile.getItem(), tile.isMoveable(), orientation, row, col);
+						board[row][col] = tiles.pop();
 						break;
 					}
 				}
