@@ -34,13 +34,24 @@ public class Tile extends JLabel {
 		}
 
 		try {
-			img = ImageIO.read(new File(head+"/res/github-icon.png"));
+			img = ImageIO.read(new File(head+"/res/"+item+".png"));
 			cpy = rotateImage(img, 0.0);
 		} catch(Exception e) {
-			System.out.println("StackOverflow wants you to search why file no load");
+			System.out.println(item+" had a problem loading");
 		}
 	}
-
+	public void rotate(double ang) {
+		for (int i=0;i<ang;i++) {
+			try {
+				Thread.sleep(10);
+				angle+=1;
+				cpy = rotateImage(img, angle);
+				repaint();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	public BufferedImage rotateImage(BufferedImage img, double angle) {
 		double rad = Math.toRadians(angle), sin = Math.abs(Math.sin(rad)), cos = Math.abs(Math.cos(rad));
 		int w = img.getWidth(), h = img.getHeight();
@@ -57,6 +68,21 @@ public class Tile extends JLabel {
 		g2d.drawImage(img, 0, 0, this);
 		g2d.dispose();
 		return rot; //return the newly rotated BufferedImage
+	}
+	@Override
+	public Dimension getPreferredSize() {
+		return img==null? new Dimension(200, 200):new Dimension(img.getWidth(), img.getHeight());
+	}
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		if(cpy!=null) {
+			Graphics2D g2d = (Graphics2D) g.create();
+			int x = (getWidth()-cpy.getWidth())/2;
+			int y = (getHeight()-cpy.getHeight())/2;
+			g2d.drawImage(cpy, x, y, this);
+			g2d.dispose();
+		}
 	}
 	public int getX() {
 		return x;
