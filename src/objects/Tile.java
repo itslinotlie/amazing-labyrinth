@@ -12,7 +12,6 @@ public class Tile extends JLabel {
 	private int x, y;
 	private double angle = 0;
 	private BufferedImage img, cpy;
-
 	private boolean move[] = new boolean[4];
 
 	//e.g. I/L/T, Monkey, false (might delete), 0/1/2/3, [1, 7], [1, 7]
@@ -59,14 +58,12 @@ public class Tile extends JLabel {
 		g2d.dispose();
 		return rot; //return the newly rotated BufferedImage
 	}
-
 	public int getX() {
 		return x;
 	}
 	public int getY() {
 		return y;
 	}
-
 	@Override
 	public String toString() {
 		return "Tile [type=" + type + ", item=" + item + ", x=" + x + ", y=" + y + "]";
