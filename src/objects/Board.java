@@ -42,7 +42,8 @@ public class Board {
 				}
 			}
 			free = tiles.pop();
-			x = free.getX(); y = free.getY(); board[x][y] = free;
+			free.setY(mxn+1); free.setX(mxn+1);
+			x = y = mxn+1; board[x][y] = free;
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR. File not found.");
 		}

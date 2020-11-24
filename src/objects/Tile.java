@@ -19,26 +19,28 @@ public class Tile extends JLabel {
 		this.type = type;
 		this.item = item;
 		this.x = x; this.y = y;
-		if(type.equals("I")) {
-			for (int i=0;i<=2;i+=2) {
-				move[(orientation+i)%4] = true;
-			}
-		} else if(type.equals("L")) {
-			for (int i=0;i<=1;i++) {
-				move[(orientation+i)%4] = true;
-			}
-		} else if(type.equals("T")) {
-			for (int i=1;i<=3;i++) {
-				move[(orientation+i)%4] = true;
-			}
-		}
-
 		try {
 			img = ImageIO.read(new File(head+item+".png"));
 			cpy = rotateImage(img, 0.0);
 		} catch(Exception e) {
 			System.out.println(item+" had a problem loading");
 			System.out.println(head);
+		}
+		if(orientation==-1) return;
+
+		if(type.equals("I")) {
+			for (int i=0;i<=2;i+=2) {
+				move[(orientation+i)%4] = true;
+			}
+		} else if(type.equals("L")) {
+			for (int i=0;i<=1;i++) {
+				System.out.println(item+" "+orientation);
+				move[(orientation+i)%4] = true;
+			}
+		} else if(type.equals("T")) {
+			for (int i=1;i<=3;i++) {
+				move[(orientation+i)%4] = true;
+			}
 		}
 	}
 	public void rotate(double ang, boolean wait) {
