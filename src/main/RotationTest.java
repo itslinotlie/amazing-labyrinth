@@ -9,6 +9,15 @@ import java.io.File;
 import java.util.Scanner;
 
 public class RotationTest {
+    public static void main(String[] args) { //someone deleted this - .-
+        RotationTest test = new RotationTest();
+        Scanner in = new Scanner(System.in);
+        int val = in.nextInt();
+        while(val!=0) {
+            test.rotate(val);
+            val = in.nextInt();
+        }
+    }
     public TestPanel panel = new TestPanel();
     public RotationTest() {
         JFrame frame = new JFrame("Test");
