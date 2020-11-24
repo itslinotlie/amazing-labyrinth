@@ -13,36 +13,33 @@ public class Board {
 	private Tile freeTile;
 	
 	public Board() {
-		int orientation;
 		int row = 1;
 		int col = 1;
 		Stack<Tile> tiles = new Stack<Tile>();
 		Tile tile;
-		Scanner input;
+		Scanner in;
 		
 		try {
-			input = new Scanner(new File("res/Tiles.txt"));
-			input.useDelimiter(",");
+			in = new Scanner(new File("res/Tiles.txt"));
+			in.useDelimiter(",");
 			
-			for (int i = 0; i < 16; i++) { 									// adding non movable tiles to board
-				tile = new Tile(input.next().replaceAll("\n", "").replaceAll("\r", ""), input.next(), input.nextBoolean(), input.nextInt(), input.nextInt(), input.nextInt());
+			for (int i = 0; i < 16; i++) { // adding non movable tiles to board
+				tile = new Tile(in.next().replaceAll("\n", "").replaceAll("\r", ""), in.next(), in.nextInt(), in.nextInt(), in.nextInt());
 				board[tile.getX()][tile.getY()] = tile;
 			}
 			
-			for (int i = 0; i < 34; i++) { 						// adding all the movable tiles to a queue so that they can be randomly added to the board
-				tiles.add(new Tile(input.next().replaceAll("\n", "").replaceAll("\r", ""), input.next(), input.nextBoolean(), input.nextInt(), input.nextInt(), input.nextInt()));
+			for (int i = 0; i < 34; i++) { // adding all the movable tiles to a queue so that they can be randomly added to the board
+				tiles.add(new Tile(in.next().replaceAll("\n", "").replaceAll("\r", ""), in.next(), in.nextInt(), in.nextInt(), in.nextInt()));
 			}
 			Collections.shuffle(tiles);
 
-			while(tiles.size() != 1) { 				// randomly assigning orientation and position to movable tiles, and adding them to board
-				while(true) {
-					orientation = (int) (Math.random() * 4);
+			while(tiles.size() != 1) { // randomly assigning orientation and position to movable tiles, and adding them to board
+				while(true) { //bash till it something works
 					row = (int) (Math.random() * 7 + 1);
 					col = (int) (Math.random() * 7 + 1);
 					
 					if (board[row][col] == null) {
-						tile = tiles.pop();
-						board[row][col] = new Tile(tile.getType(), tile.getItem(), tile.isMoveable(), orientation, row, col);
+						board[row][col] = tiles.pop();
 						break;
 					}
 				}
@@ -54,22 +51,9 @@ public class Board {
 		}
 	}
 
-	public Tile getFreeTile() {
-		return freeTile;
-	}
-
-	public void setFreeTile(Tile freeTile) {
-		this.freeTile = freeTile;
-	}
-
 	public Tile[][] getBoard() {
 		return board;
 	}
-
-	public void setBoard(Tile[][] board) {
-		this.board = board;
-	}
-	
 	@Override
 	public String toString() {
 		return "Board [board=" + Arrays.toString(board) + "]";
