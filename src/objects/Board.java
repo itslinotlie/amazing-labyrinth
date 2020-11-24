@@ -32,6 +32,7 @@ public class Board {
 					row = (int) (Math.random() * 7 + 1);
 					col = (int) (Math.random() * 7 + 1);
 					rot = (int) (Math.random() * 4 + 1);
+					System.out.println(rot);
 					if (board[row][col] == null) {
 						tile = tiles.pop();
 						tile.setX(row); tile.setY(col); tile.rotate(rot*90, false);

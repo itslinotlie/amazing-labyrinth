@@ -38,6 +38,7 @@ public class Tile extends JLabel {
 			cpy = rotateImage(img, 0.0);
 		} catch(Exception e) {
 			System.out.println(item+" had a problem loading");
+			System.out.println(head);
 		}
 	}
 	public void rotate(double ang, boolean wait) {
