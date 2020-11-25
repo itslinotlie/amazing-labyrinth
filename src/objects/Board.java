@@ -11,8 +11,7 @@ public class Board {
 	private Tile free, board[][] = new Tile[9][9];
 	private int x, y, mxn = 7;
 	public Board() {
-		int row = 1;
-		int col = 1;
+		int row = 1, col = 1, rot = 0;
 		Stack<Tile> tiles = new Stack<Tile>();
 		Tile tile;
 		Scanner in;
@@ -32,8 +31,11 @@ public class Board {
 				while(true) { //bash till it something works
 					row = (int) (Math.random() * 7 + 1);
 					col = (int) (Math.random() * 7 + 1);
+					rot = (int) (Math.random() * 4 + 1);
 					if (board[row][col] == null) {
-						board[row][col] = tiles.pop();
+						tile = tiles.pop();
+						tile.setX(row); tile.setY(col); tile.rotate(rot*90, false);
+						board[row][col] = tile;
 						break;
 					}
 				}

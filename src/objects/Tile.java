@@ -34,16 +34,16 @@ public class Tile extends JLabel {
 		}
 
 		try {
-			img = ImageIO.read(new File(head+"/res/"+item+".png"));
+			img = ImageIO.read(new File(head+item+".png"));
 			cpy = rotateImage(img, 0.0);
 		} catch(Exception e) {
 			System.out.println(item+" had a problem loading");
 		}
 	}
-	public void rotate(double ang) {
+	public void rotate(double ang, boolean wait) {
 		for (int i=0;i<ang;i++) {
 			try {
-				Thread.sleep(10);
+				if(wait) Thread.sleep(7);
 				angle+=1;
 				cpy = rotateImage(img, angle);
 				repaint();
@@ -62,8 +62,7 @@ public class Tile extends JLabel {
 		AffineTransform at = new AffineTransform();
 		at.translate((nw-w)/2, (nh-h)/2);
 
-		int x = w/2, y = h/2; //center of rotation
-		at.rotate(rad, x, y);
+		at.rotate(rad, w/2, h/2); //center of rotation
 		g2d.setTransform(at);
 		g2d.drawImage(img, 0, 0, this);
 		g2d.dispose();
@@ -87,8 +86,14 @@ public class Tile extends JLabel {
 	public int getX() {
 		return x;
 	}
+	public void setX(int x) {
+		this.x = x;
+	}
 	public int getY() {
 		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
 	}
 	@Override
 	public String toString() {
