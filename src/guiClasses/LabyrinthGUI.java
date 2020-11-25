@@ -3,6 +3,7 @@ package guiClasses;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.*;
 import objects.*;
 
@@ -37,7 +38,7 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		createPanels();
 		createFrame();
 	}
-	
+
 	private void createPlayerPanel() {
 		
 		freeTile.setBounds(150, 100, 520/7, 520/7);
@@ -84,7 +85,7 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 	}
 	
 	public void rotate(int y, int x, boolean right) {
-		board[y][x].rotate(90, right);
+		board[y][x].rotate(90, right, true);
 		freeTile.setIcon(new ImageIcon(new ImageIcon(board[y][x].getImg()).getImage().getScaledInstance(520/7, 520/7, 0)));
 	}
 	
