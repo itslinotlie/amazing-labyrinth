@@ -2,10 +2,7 @@ package objects;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Board {
 	private Tile free, board[][] = new Tile[9][9];
@@ -14,7 +11,6 @@ public class Board {
 		Stack<Tile> tiles = new Stack<Tile>();
 		Tile tile;
 		Scanner in;
-		
 		try {
 			in = new Scanner(new File("res/Tiles.txt"));
 			in.useDelimiter(",");
@@ -32,16 +28,13 @@ public class Board {
 			}
 			Collections.shuffle(tiles);
 
-			while(tiles.size() != 1) { // randomly assigning orientation and position to movable tiles, and adding them to board
-				while(true) { //bash till it something works
-					int row = (int) (Math.random() * 7 + 1);
-					int col = (int) (Math.random() * 7 + 1);
-					int rot = (int) (Math.random() * 4 + 1);
-					if (board[row][col] == null) {
+			for (int i=1;i<=mxn;i++) {
+				for (int j=1;j<=mxn;j++) {
+					if(board[i][j]==null) {
+						int rot = (int) (Math.random() * 4 + 1);
 						tile = tiles.pop();
-						tile.setX(row); tile.setY(col); tile.rotate(rot*90, true);
-						board[row][col] = tile;
-						break;
+						tile.setX(i); tile.setY(j); tile.rotate(rot*90, true);
+						board[i][j] = tile;
 					}
 				}
 			}
