@@ -355,8 +355,8 @@ public class StartScreenGUI extends JFrame implements ActionListener{
 				}
 			}
 			
-			new LabyrinthGUI(Integer.parseInt(numCardsText.getText()), playerColours, false);
 			dispose();
+			new LabyrinthGUI(Integer.parseInt(numCardsText.getText()), playerColours, false);
 			
 		}
 		
