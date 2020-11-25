@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Arrays;
 
 public class Tile extends JLabel {
 	private String item, type, head = new File("").getAbsolutePath()+"/res/images/"; //item: bat, dragon etc | type: I, L, T
@@ -26,7 +27,7 @@ public class Tile extends JLabel {
 			System.out.println(item+" had a problem loading");
 			System.out.println(head);
 		}
-		if(orientation==-1) return;
+		orientation = Math.max(0, orientation);
 
 		if(type.equals("I")) {
 			for (int i=0;i<=2;i+=2) {
@@ -42,22 +43,21 @@ public class Tile extends JLabel {
 			}
 		}
 	}
-	public void rotate(double ang, boolean sum) {
-		for (int i=0;i<ang;i++) {
+	public void rotate(double ang, boolean sum, boolean change) {
+		for (int i=1;i<=ang;i++) {
 			if(sum) angle++;
 			else angle--;
 			cpy = rotateImage(img, angle);
 			repaint();
-			if(i%90==0) {
+			if(change && (int)Math.ceil(i/90)==i/90) {
 				boolean tmp[] = new boolean[4];
 				for (int j=0;j<4;j++) {
 					if(move[j]) {
 						tmp[(j+1)%4] = true;
 					}
 				}
-				move = tmp;
+				move = tmp.clone();
 			}
-
 		}
 	}
 	public BufferedImage rotateImage(BufferedImage img, double angle) {
@@ -91,9 +91,17 @@ public class Tile extends JLabel {
 			g2d.dispose();
 		}
 	}
-	
+	public String getName() {
+		return item;
+	}
 	public BufferedImage getImg() {
 		return cpy;
+	}
+	public boolean[] getMove() {
+		return move;
+	}
+	public double getAngle() {
+		return angle;
 	}
 	public int getX() {
 		return x;
@@ -106,6 +114,9 @@ public class Tile extends JLabel {
 	}
 	public void setY(int y) {
 		this.y = y;
+	}
+	public String getType() {
+		return type;
 	}
 	@Override
 	public String toString() {

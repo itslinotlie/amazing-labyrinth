@@ -3,6 +3,7 @@ package guiClasses;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.*;
 import objects.*;
 
@@ -36,8 +37,24 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		createPlayerPanel();
 		createPanels();
 		createFrame();
+//		boardObj.getPath(1, 1);
+		System.out.println(board[1][2].getType());
+		System.out.println(board[1][3].getName());
+		System.out.println(board[1][3].getX()+" "+board[1][3].getY());
+		for (int i=1;i<=7;i++) {
+			for (int j=1;j<=7;j++) {
+				System.out.printf("(%d, %d) %f = %s and %s\n", i, j, board[i][j].getAngle(), board[i][j].getName(), Arrays.toString(board[i][j].getMove()));
+//				System.out.printf("(%d, %d) = %s\n", i, j, board[i][j].getName());
+			}
+		}
+//		System.out.println("(1, 1) = "+ Arrays.toString(board[1][1].getMove()));
+//		System.out.println("(7, 7) = "+ Arrays.toString(board[7][7].getMove()));
+//		System.out.println("(2, 1) = "+ Arrays.toString(board[2][1].getMove()));
+//		System.out.println("(1, 1) = "+ Arrays.toString(boardObj.getBoard()[1][1].getMove()));
+//		System.out.println("(1, 2) = "+ Arrays.toString(boardObj.getBoard()[1][2].getMove()));
+//		System.out.println("(2, 1) = "+ Arrays.toString(boardObj.getBoard()[2][1].getMove()));
 	}
-	
+
 	private void createPlayerPanel() {
 		
 		freeTile.setBounds(150, 100, 520/7, 520/7);
@@ -84,7 +101,7 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 	}
 	
 	public void rotate(int y, int x, boolean right) {
-		board[y][x].rotate(90, right);
+		board[y][x].rotate(90, right, true);
 		freeTile.setIcon(new ImageIcon(new ImageIcon(board[y][x].getImg()).getImage().getScaledInstance(520/7, 520/7, 0)));
 	}
 	
