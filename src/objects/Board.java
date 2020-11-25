@@ -11,7 +11,6 @@ public class Board {
 	private Tile free, board[][] = new Tile[9][9];
 	private int x, y, mxn = 7;
 	public Board() {
-		int row = 1, col = 1, rot = 0;
 		Stack<Tile> tiles = new Stack<Tile>();
 		Tile tile;
 		Scanner in;
@@ -21,17 +20,23 @@ public class Board {
 			in.useDelimiter(",");
 
 			for (int i=0;i<50;i++) {
-				tile = new Tile(in.next().replaceAll("\n", "").replaceAll("\r", ""), in.next(), in.nextInt(), in.nextInt(), in.nextInt());
-				if(i<16) board[tile.getX()][tile.getY()] = tile;
+				String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
+				String name = in.next();
+				int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
+				tile = new Tile(letter, name, rot, x, y);
+				if(i<16) { //the x and y are flipped in the txt file...
+					tile.rotate(rot*90, true);
+					board[x][y] = tile;
+				}
 				else tiles.add(tile);
 			}
 			Collections.shuffle(tiles);
 
 			while(tiles.size() != 1) { // randomly assigning orientation and position to movable tiles, and adding them to board
 				while(true) { //bash till it something works
-					row = (int) (Math.random() * 7 + 1);
-					col = (int) (Math.random() * 7 + 1);
-					rot = (int) (Math.random() * 4 + 1);
+					int row = (int) (Math.random() * 7 + 1);
+					int col = (int) (Math.random() * 7 + 1);
+					int rot = (int) (Math.random() * 4 + 1);
 					if (board[row][col] == null) {
 						tile = tiles.pop();
 						tile.setX(row); tile.setY(col); tile.rotate(rot*90, true);
