@@ -2,49 +2,54 @@ package objects;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Board {
 	private Tile free, board[][] = new Tile[9][9];
 	private int x, y, mxn = 7;
 	public Board() {
-		int row = 1, col = 1, rot = 0;
 		Stack<Tile> tiles = new Stack<Tile>();
 		Tile tile;
 		Scanner in;
-		
 		try {
 			in = new Scanner(new File("res/Tiles.txt"));
 			in.useDelimiter(",");
 
 			for (int i=0;i<50;i++) {
-				tile = new Tile(in.next().replaceAll("\n", "").replaceAll("\r", ""), in.next(), in.nextInt(), in.nextInt(), in.nextInt());
-				if(i<16) board[tile.getX()][tile.getY()] = tile;
+				String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
+				String name = in.next();
+				int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
+				tile = new Tile(letter, name, rot, x, y);
+				if(i<16) { //the x and y are flipped in the txt file...
+					tile.rotate(rot*90, true);
+					board[x][y] = tile;
+				}
 				else tiles.add(tile);
 			}
 			Collections.shuffle(tiles);
 
-			while(tiles.size() != 1) { // randomly assigning orientation and position to movable tiles, and adding them to board
-				while(true) { //bash till it something works
-					row = (int) (Math.random() * 7 + 1);
-					col = (int) (Math.random() * 7 + 1);
-					rot = (int) (Math.random() * 4 + 1);
-					if (board[row][col] == null) {
+			for (int i=1;i<=mxn;i++) {
+				for (int j=1;j<=mxn;j++) {
+					if(board[i][j]==null) {
+						int rot = (int) (Math.random() * 4 + 1);
 						tile = tiles.pop();
-						tile.setX(row); tile.setY(col); tile.rotate(rot*90, false);
-						board[row][col] = tile;
-						break;
+						tile.setX(i); tile.setY(j); tile.rotate(rot*90, true);
+						board[i][j] = tile;
 					}
 				}
 			}
 			free = tiles.pop();
-			x = free.getX(); y = free.getY(); board[x][y] = free;
+			free.setY(mxn+1); free.setX(mxn+1);
+			x = y = mxn+1; board[y][x] = free;
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR. File not found.");
 		}
+	}
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
 	}
 	//p: anything for right/down, - to go left/up
 	//c: r to push row, c = to push column

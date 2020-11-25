@@ -19,6 +19,15 @@ public class Tile extends JLabel {
 		this.type = type;
 		this.item = item;
 		this.x = x; this.y = y;
+		try {
+			img = ImageIO.read(new File(head+item+".png"));
+			cpy = rotateImage(img, 0.0);
+		} catch(Exception e) {
+			System.out.println(item+" had a problem loading");
+			System.out.println(head);
+		}
+		if(orientation==-1) return;
+
 		if(type.equals("I")) {
 			for (int i=0;i<=2;i+=2) {
 				move[(orientation+i)%4] = true;
@@ -32,24 +41,23 @@ public class Tile extends JLabel {
 				move[(orientation+i)%4] = true;
 			}
 		}
-
-		try {
-			img = ImageIO.read(new File(head+item+".png"));
-			cpy = rotateImage(img, 0.0);
-		} catch(Exception e) {
-			System.out.println(item+" had a problem loading");
-		}
 	}
-	public void rotate(double ang, boolean wait) {
+	public void rotate(double ang, boolean sum) {
 		for (int i=0;i<ang;i++) {
-			try {
-				if(wait) Thread.sleep(7);
-				angle+=1;
-				cpy = rotateImage(img, angle);
-				repaint();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if(sum) angle++;
+			else angle--;
+			cpy = rotateImage(img, angle);
+			repaint();
+			if(i%90==0) {
+				boolean tmp[] = new boolean[4];
+				for (int j=0;j<4;j++) {
+					if(move[j]) {
+						tmp[(j+1)%4] = true;
+					}
+				}
+				move = tmp;
 			}
+
 		}
 	}
 	public BufferedImage rotateImage(BufferedImage img, double angle) {
@@ -82,6 +90,10 @@ public class Tile extends JLabel {
 			g2d.drawImage(cpy, x, y, this);
 			g2d.dispose();
 		}
+	}
+	
+	public BufferedImage getImg() {
+		return cpy;
 	}
 	public int getX() {
 		return x;

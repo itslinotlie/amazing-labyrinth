@@ -345,6 +345,19 @@ public class StartScreenGUI extends JFrame implements ActionListener{
 		} else if (event.getSource() == removeCardButton) {
 			if (!numCardsText.getText().equals("2")) 
 			numCardsText.setText(Integer.toString((Integer.parseInt(numCardsText.getText())-1)));	
+		} else if (event.getSource() == startGameButton) {
+			
+			Color[] playerColours = new Color[playersArray.size()];
+			
+			for (JPanel player : playersArray) {
+				if (player.getComponent(1).getBackground() == PLAYER_COLOURS[0]) {
+					return;
+				}
+			}
+			
+			dispose();
+			new LabyrinthGUI(Integer.parseInt(numCardsText.getText()), playerColours, false);
+			
 		}
 		
 		for (JPanel player : playersArray) {
