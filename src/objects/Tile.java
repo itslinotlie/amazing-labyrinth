@@ -42,16 +42,12 @@ public class Tile extends JLabel {
 			}
 		}
 	}
-	public void rotate(double ang, boolean wait) {
+	public void rotate(double ang, boolean sum) {
 		for (int i=0;i<ang;i++) {
-			try {
-				if(wait) Thread.sleep(7);
-				angle+=1;
-				cpy = rotateImage(img, angle);
-				repaint();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			if(sum) angle++;
+			else angle--;
+			cpy = rotateImage(img, angle);
+			repaint();
 			if(i%90==0) {
 				boolean tmp[] = new boolean[4];
 				for (int j=0;j<4;j++) {

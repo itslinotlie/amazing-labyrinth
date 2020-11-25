@@ -11,8 +11,10 @@ public class LabyrinthGUI extends JFrame{
 	private static final int SCREEN_WIDTH = 850, SCREEN_HEIGHT = 650;
 	
 	private static final Color LIGHT_GREY = new Color(35,35,35);
-	
-	private Tile[][] board = new Board().getBoard();
+
+	private Board boardObj = new Board();
+
+	private Tile[][] board = boardObj.getBoard();
 	
 	private JLayeredPane mainPanel = new JLayeredPane();
 	
@@ -57,12 +59,33 @@ public class LabyrinthGUI extends JFrame{
 				gamePanel.add(tileLabel);
 			}
 		}
+		//this adds the left and right rotate thing
+		JLabel free = new JLabel();
+		free.setBounds(600, 150, 520/7, 520/7);
+		free.setIcon(new ImageIcon(new ImageIcon(board[boardObj.getY()][boardObj.getX()].getImg()).getImage().getScaledInstance(520/7, 520/7, 0)));
+		free.setOpaque(true);
+		mainPanel.add(free);
+		JButton left = new JButton(), right = new JButton();
+		left.setBounds(700, 200, 50, 50);
+		right.setBounds(760, 200, 50, 50);
+		left.setBackground(Color.RED); right.setBackground(Color.GREEN);
+		left.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), false)); //lambdas op
+		right.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), true));
+		mainPanel.add(left); mainPanel.add(right);
 
 		mainPanel.setLayout(null);
 		mainPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		mainPanel.add(gamePanel);
 		mainPanel.add(playerPanel);
 		mainPanel.setVisible(true);
+	}
+	public void rotate(int y, int x, boolean right) {
+		board[y][x].rotate(90, right);
+		JLabel tile = new JLabel();
+		tile.setBounds(600, 150, 520/7, 520/7);
+		tile.setIcon(new ImageIcon(new ImageIcon(board[y][x].getImg()).getImage().getScaledInstance(520/7, 520/7, 0)));
+		tile.setOpaque(true);
+		mainPanel.add(tile);
 	}
 	
 	private void createFrame() {

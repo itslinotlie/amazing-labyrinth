@@ -32,10 +32,9 @@ public class Board {
 					row = (int) (Math.random() * 7 + 1);
 					col = (int) (Math.random() * 7 + 1);
 					rot = (int) (Math.random() * 4 + 1);
-					System.out.println(rot);
 					if (board[row][col] == null) {
 						tile = tiles.pop();
-						tile.setX(row); tile.setY(col); tile.rotate(rot*90, false);
+						tile.setX(row); tile.setY(col); tile.rotate(rot*90, true);
 						board[row][col] = tile;
 						break;
 					}
@@ -43,10 +42,16 @@ public class Board {
 			}
 			free = tiles.pop();
 			free.setY(mxn+1); free.setX(mxn+1);
-			x = y = mxn+1; board[x][y] = free;
+			x = y = mxn+1; board[y][x] = free;
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR. File not found.");
 		}
+	}
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
 	}
 	//p: anything for right/down, - to go left/up
 	//c: r to push row, c = to push column
