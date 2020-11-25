@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Board {
-	private int x, y, mxn = 7;
+	private int x, y, mxn = 7, m[][] = {{-1, 0},{0, 1},{1, 0},{0, -1}};;
+	private boolean vis[][] = new boolean[mxn+2][mxn+2];
 	private Tile free, board[][] = new Tile[mxn+2][mxn+2];
 	public Board() {
 		Stack<Tile> tiles = new Stack<Tile>();
@@ -79,26 +80,20 @@ public class Board {
 			}
 		}
 	}
-	private boolean vis[][] = new boolean[mxn+2][mxn+2];
-	int m[][] = {{-1, 0},{1, 0},{0, -1},{0, 1}};
+	//send y and x coords and it'll return a 2d array of the tiles that can be visited from (y, x)
 	public boolean[][] getPath(int y, int x) {
 		for (int i=0;i<=mxn+1;i++) Arrays.fill(vis[i], false);
-		for (int i=0;i<4;i++) {
-			if(board[y][x].getMove()[i]) dfs(y, x, i);
-		}
-		for (int i=0;i<=mxn+1;i++) System.out.println(Arrays.toString(vis[i]));
+		dfs(y, x);
 		return vis;
 	}
-	public void dfs(int y, int x, int d) {
+	public void dfs(int y, int x) {
 		vis[y][x] = true;
 		for (int i=0;i<4;i++) {
 			int r = y+m[i][0], c = x+m[i][1];
-			if(r<=0 || r>mxn || c<=0 || c>mxn || !board[r][c].getMove()[(d+2)%4] || vis[r][c]) continue;
-			if(board[y][x].getMove()[d] && board[r][c].getMove()[(d+2)%4]) dfs(r, c, d);
+			if(r<=0 || r>mxn || c<=0 || c>mxn || vis[r][c] || !board[y][x].getMove()[i] || !board[r][c].getMove()[(i+2)%4]) continue;
+			dfs(r, c);
 		}
 	}
-
-
 	public Tile[][] getBoard() {
 		return board;
 	}
