@@ -37,10 +37,10 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		createPlayerPanel();
 		createPanels();
 		createFrame();
-//		boardObj.getPath(1, 1);
-		System.out.println(board[1][2].getType());
-		System.out.println(board[1][3].getName());
-		System.out.println(board[1][3].getX()+" "+board[1][3].getY());
+		boardObj.getPath(1, 1);
+//		System.out.println(board[1][2].getType());
+//		System.out.println(board[1][3].getName());
+//		System.out.println(board[1][3].getX()+" "+board[1][3].getY());
 		for (int i=1;i<=7;i++) {
 			for (int j=1;j<=7;j++) {
 				System.out.printf("(%d, %d) %f = %s and %s\n", i, j, board[i][j].getAngle(), board[i][j].getName(), Arrays.toString(board[i][j].getMove()));

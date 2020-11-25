@@ -93,8 +93,8 @@ public class Board {
 		vis[y][x] = true;
 		for (int i=0;i<4;i++) {
 			int r = y+m[i][0], c = x+m[i][1];
-			if(r<=0 || r>mxn || c<=0 || c>mxn || !board[r][c].getMove()[(d+2)%4]) continue;
-			dfs(r, c, d);
+			if(r<=0 || r>mxn || c<=0 || c>mxn || !board[r][c].getMove()[(d+2)%4] || vis[r][c]) continue;
+			if(board[y][x].getMove()[d] && board[r][c].getMove()[(d+2)%4]) dfs(r, c, d);
 		}
 	}
 

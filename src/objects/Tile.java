@@ -49,7 +49,7 @@ public class Tile extends JLabel {
 			else angle--;
 			cpy = rotateImage(img, angle);
 			repaint();
-			if(change && (int)Math.ceil(i/90)==i/90) {
+			if(change && i%90==0) {
 				boolean tmp[] = new boolean[4];
 				for (int j=0;j<4;j++) {
 					if(move[j]) {
