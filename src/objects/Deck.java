@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class Deck {
-	private Stack<Card> deck = new Stack<Card>();
+	private static Stack<Card> deck = new Stack<Card>();
 	
 	public Deck() {
 		Scanner input;
@@ -26,16 +26,12 @@ public class Deck {
 		Collections.shuffle(deck);
 	}
 
-	public Card getCard() {
+	public static Card getCard() {
 		return(deck.pop());
 	}
 	
 	public Stack<Card> getDeck() {
 		return deck;
-	}
-
-	public void setDeck(Stack<Card> deck) {
-		this.deck = deck;
 	}
 
 	@Override
