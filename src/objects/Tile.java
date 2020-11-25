@@ -52,6 +52,16 @@ public class Tile extends JLabel {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			if(i%90==0) {
+				boolean tmp[] = new boolean[4];
+				for (int j=0;j<4;j++) {
+					if(move[j]) {
+						tmp[(j+1)%4] = true;
+					}
+				}
+				move = tmp;
+			}
+
 		}
 	}
 	public BufferedImage rotateImage(BufferedImage img, double angle) {
@@ -87,9 +97,8 @@ public class Tile extends JLabel {
 	}
 	
 	public BufferedImage getImg() {
-		return img;
+		return cpy;
 	}
-	
 	public int getX() {
 		return x;
 	}

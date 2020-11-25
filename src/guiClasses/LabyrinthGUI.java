@@ -1,6 +1,8 @@
 package guiClasses;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import objects.*;
 
@@ -47,7 +49,6 @@ public class LabyrinthGUI extends JFrame{
 		
 		for (int row = 1; row < 8; row++) {	
 			for (int col = 1; col < 8; col++) {
-
 				JLabel tileLabel = new JLabel("hello");
 				tileLabel.setBounds((board[row][col].getX()-1) * (520/7)+30, (board[row][col].getY()-1) * (520/7) + 30, 520/7, 520/7);
 				tileLabel.setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(520/7, 520/7, 0)));
