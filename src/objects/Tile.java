@@ -34,7 +34,6 @@ public class Tile extends JLabel {
 			}
 		} else if(type.equals("L")) {
 			for (int i=0;i<=1;i++) {
-				System.out.println(item+" "+orientation);
 				move[(orientation+i)%4] = true;
 			}
 		} else if(type.equals("T")) {
@@ -86,6 +85,11 @@ public class Tile extends JLabel {
 			g2d.dispose();
 		}
 	}
+	
+	public BufferedImage getImg() {
+		return img;
+	}
+	
 	public int getX() {
 		return x;
 	}
