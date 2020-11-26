@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.Arrays;
 
 public class Tile extends JLabel {
-	private String item, type, head = new File("").getAbsolutePath()+"/res/images/"; //item: bat, dragon etc | type: I, L, T
+	private String item, type, head = new File("").getAbsolutePath()+"/res/tile-images/"; //item: bat, dragon etc | type: I, L, T
 	private int x, y;
 	private double angle = 0;
 	private BufferedImage img, cpy;
