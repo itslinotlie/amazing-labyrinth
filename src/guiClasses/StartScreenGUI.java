@@ -13,12 +13,11 @@ import javax.swing.text.*;
 @SuppressWarnings("serial")
 public class StartScreenGUI extends JFrame implements ActionListener{
 	
-	public static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
+	private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 	
 	private static final Color LIGHT_GREY = new Color(35,35,35);
 	private final Color[] PLAYER_COLOURS = {Color.WHITE, Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
-	
-	private static final Font labelFont = new Font("Times New Roman", Font.BOLD, 26);
+	private final Font labelFont = new Font("Times New Roman", Font.BOLD, 26);
 	
 	private static final ImageIcon LABYRINTH_TEXT = new ImageIcon(new ImageIcon("./res/labyrinth-text.png").getImage().getScaledInstance(SCREEN_WIDTH, 200, 0));
 	private static final ImageIcon LABYRINTH_TEXT2 = new ImageIcon(new ImageIcon("./res/labyrinth-text-darker.png").getImage().getScaledInstance(SCREEN_WIDTH, 200, 0));
@@ -118,15 +117,12 @@ public class StartScreenGUI extends JFrame implements ActionListener{
 		numPlayersLabel.setFont(labelFont);
 		numPlayersLabel.setForeground(Color.WHITE);
 		
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; i++) 
 			addPlayer();
-		}
 		
-		playerColours.add(Color.WHITE);
-		playerColours.add(Color.RED);
-		playerColours.add(Color.BLUE);
-		playerColours.add(Color.YELLOW);
-		playerColours.add(Color.GREEN);
+		for (int i = 0; i < 5; i++) 
+			playerColours.add(PLAYER_COLOURS[i]);
+	
 		
 		addPlayerButton.setBounds(SCREEN_WIDTH/2-300, 320, 40, 40);
 		addPlayerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -349,11 +345,13 @@ public class StartScreenGUI extends JFrame implements ActionListener{
 			
 			Color[] playerColours = new Color[playersArray.size()];
 			
-			for (JPanel player : playersArray) {
-				if (player.getComponent(1).getBackground() == PLAYER_COLOURS[0]) {
+			for (int i = 0; i < playersArray.size(); i++) {
+				if (playersArray.get(i).getComponent(1).getBackground() == PLAYER_COLOURS[0])
 					return;
-				}
+				else
+					playerColours[i] = playersArray.get(i).getComponent(1).getBackground();
 			}
+		
 			
 			dispose();
 			new LabyrinthGUI(Integer.parseInt(numCardsText.getText()), playerColours, false);

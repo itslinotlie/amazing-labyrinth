@@ -24,7 +24,7 @@ public class Card {
 	}
 	
 	public BufferedImage getImg() {
-		return(img);
+		return img;
 	}
 
 	@Override

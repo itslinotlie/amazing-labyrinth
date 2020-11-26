@@ -1,22 +1,23 @@
 package objects;
 
+import java.awt.Color;
 import java.util.Arrays;
 
 public class Player {
-	private int row, col;
+	private Color colour;
 	private boolean playing;
 	private boolean[] found;
 	private Card[] hand;
 	
 	
-	public Player(int numCards, int row, int col, boolean playing) {
+	public Player(int numCards, Color colour, boolean playing) {
+		Deck deck = new Deck();
 		hand = new Card[numCards];
 		found = new boolean[numCards];
 		for (int i = 0; i < numCards; i++) {
-			hand[i] = Deck.getCard();
+			hand[i] = deck.getCard();
 		}
-		this.row = row;
-		this.col = col;
+		this.colour = colour;
 		this.playing = playing;
 	}
 
@@ -27,6 +28,10 @@ public class Player {
 	public void setFound(boolean[] found) {
 		this.found = found;
 	}
+	
+	public Color getColour() {
+		return colour;
+	}
 
 	public Card[] getHand() {
 		return hand;
@@ -34,22 +39,6 @@ public class Player {
 
 	public void setHand(Card[] hand) {
 		this.hand = hand;
-	}
-
-	public int getRow() {
-		return row;
-	}
-
-	public void setRow(int row) {
-		this.row = row;
-	}
-
-	public int getCol() {
-		return col;
-	}
-
-	public void setCol(int col) {
-		this.col = col;
 	}
 
 	public boolean isPlaying() {
@@ -62,7 +51,8 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [row=" + row + ", col=" + col + ", playing=" + playing + ", found=" + Arrays.toString(found)
-				+ ", hand=" + Arrays.toString(hand) + "]";
+		return "Player [colour=" + colour + ", playing=" + playing + ", found=" + Arrays.toString(found) + ", hand="
+				+ Arrays.toString(hand) + "]";
 	}
+
 }
