@@ -71,7 +71,6 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		
 		for (int i = 0; i < numCards; i++) {
 			JLabel card = new JLabel("Potato");
-			
 			card.setForeground(Color.WHITE);
 			card.setBounds(125 + (i%3) * 60, 360 + (int) (i/3 * 110), 50, 100);
 			cards.add(card);
@@ -121,19 +120,19 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		
 		gamePanel.setLayout(null);
 		gamePanel.setBounds(0, 0, 620, 620);
-		gamePanel.setBackground(Color.DARK_GRAY);
+		//gamePanel.setBackground(Color.DARK_GRAY);
 		gamePanel.setVisible(true);
 		
+		paintBoard();
+		System.out.println(board[3][3].getBounds());
+		
 		for (int row = 1; row < 8; row++) {	
-			for (int col = 1; col < 8; col++) {
-				JLabel tileLabel = new JLabel("hello");
-				tileLabel.setBounds((board[row][col].getX()-1) * (TILE_SIZE)+50, (board[row][col].getY()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
-				tileLabel.setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
-				tileLabel.setBackground(Color.RED);
-				tileLabel.setOpaque(true);
-				gamePanel.add(tileLabel);
-			}
+			for (int col = 1; col < 8; col++) {	
+				board[row][col].setOpaque(true);
+				gamePanel.add(board[row][col]);
+			}	
 		}
+		
 		
 		for (int i = 0; i < 12; i++) {
 			shiftTilesButtons[i] = new JButton();
@@ -166,18 +165,34 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		mainPanel.add(playerPanel);
 		mainPanel.setVisible(true);
 	}
+	private void paintBoard() {
+		
+		for (int row = 1; row < 8; row++) {	
+			for (int col = 1; col < 8; col++) {	
+				//gamePanel.remove(board[row][col]);
+				board[row][col].setBounds((board[row][col].getLeft()-1) * (TILE_SIZE)+50, (board[row][col].getDown()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
+				board[row][col].setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
+			}
+		}
+		
+	}
+
 	public void shift(int parity, int letter, int magnitude) {
 		char p, n, d;
 		if(parity==0) p = '+';
 		else p = '-';
 		if(letter==0) n = 'c';
 		else n = 'r';
+		
+		System.out.println(board[2][2].getName());
+		System.out.println(board[2][2].getImg());
 		boardObj.shiftTile(p, n, magnitude);
-		for (int i=1;i<=7;i++) {
-			for (int j=1;j<=7;j++) {
-				System.out.print(boardObj.getBoard()[i][j].getName()+" ");
-			} System.out.println();
-		}
+		
+		paintBoard();
+		System.out.println(board[2][2].getImg());
+		System.out.println(board[2][2].getName());
+		System.out.println();
+		repaint();
 	}
 	public void rotate(int y, int x, boolean right) {
 		board[y][x].rotate(90, right, true);

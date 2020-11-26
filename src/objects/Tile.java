@@ -10,16 +10,16 @@ import java.util.Arrays;
 
 public class Tile extends JLabel {
 	private String item, type, head = new File("").getAbsolutePath()+"/res/tile-images/"; //item: bat, dragon etc | type: I, L, T
-	private int x, y;
+	private int left, down;
 	private double angle = 0;
 	private BufferedImage img, cpy;
 	private boolean move[] = new boolean[4];
 
 	//e.g. I/L/T, Monkey, false (might delete), 0/1/2/3, [1, 7], [1, 7]
-	public Tile(String type, String item, int orientation, int x, int y) {
+	public Tile(String type, String item, int orientation, int left, int down) {
 		this.type = type;
 		this.item = item;
-		this.x = x; this.y = y;
+		this.left = left; this.down = down;
 		try {
 			img = ImageIO.read(new File(head+item+".png"));
 			cpy = rotateImage(img, 0.0);
@@ -80,17 +80,7 @@ public class Tile extends JLabel {
 	public Dimension getPreferredSize() {
 		return img==null? new Dimension(200, 200):new Dimension(img.getWidth(), img.getHeight());
 	}
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		if(cpy!=null) {
-			Graphics2D g2d = (Graphics2D) g.create();
-			int x = (getWidth()-cpy.getWidth())/2;
-			int y = (getHeight()-cpy.getHeight())/2;
-			g2d.drawImage(cpy, x, y, this);
-			g2d.dispose();
-		}
-	}
+
 	public String getName() {
 		return item;
 	}
@@ -103,23 +93,23 @@ public class Tile extends JLabel {
 	public double getAngle() {
 		return angle;
 	}
-	public int getX() {
-		return x;
+	public int getLeft() {
+		return left;
 	}
-	public void setX(int x) {
-		this.x = x;
+	public void setLeft(int left) {
+		this.left = left;
 	}
-	public int getY() {
-		return y;
+	public int getDown() {
+		return down;
 	}
-	public void setY(int y) {
-		this.y = y;
+	public void setDown(int down) {
+		this.down = down;
 	}
 	public String getType() {
 		return type;
 	}
 	@Override
 	public String toString() {
-		return "Tile [type=" + type + ", item=" + item + ", x=" + x + ", y=" + y + "]";
+		return "Tile [type=" + type + ", item=" + item + ", x=" + left + ", y=" + down + "]";
 	}
 }

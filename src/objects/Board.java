@@ -34,13 +34,13 @@ public class Board {
 					if(board[i][j]==null) {
 						int rot = (int) (Math.random() * 4 + 1);
 						tile = tiles.pop();
-						tile.setX(j); tile.setY(i); tile.rotate(rot*90, true, true);
+						tile.setLeft(j); tile.setDown(i); tile.rotate(rot*90, true, true);
 						board[i][j] = tile;
 					}
 				}
 			}
 			free = tiles.pop();
-			free.setY(mxn+1); free.setX(mxn+1);
+			free.setDown(mxn+1); free.setLeft(mxn+1);
 			x = y = mxn+1; board[y][x] = free;
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR. File not found.");
