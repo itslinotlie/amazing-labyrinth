@@ -118,15 +118,12 @@ public class StartScreenGUI extends JFrame implements ActionListener{
 		numPlayersLabel.setFont(labelFont);
 		numPlayersLabel.setForeground(Color.WHITE);
 		
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; i++) 
 			addPlayer();
-		}
 		
-		playerColours.add(Color.WHITE);
-		playerColours.add(Color.RED);
-		playerColours.add(Color.BLUE);
-		playerColours.add(Color.YELLOW);
-		playerColours.add(Color.GREEN);
+		for (int i = 0; i < 5; i++) 
+			playerColours.add(PLAYER_COLOURS[i]);
+	
 		
 		addPlayerButton.setBounds(SCREEN_WIDTH/2-300, 320, 40, 40);
 		addPlayerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
