@@ -184,14 +184,14 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		if(letter==0) n = 'c';
 		else n = 'r';
 		
-		System.out.println(board[2][2].getName());
-		System.out.println(board[2][2].getImg());
+//		System.out.println(board[2][2].getName());
+//		System.out.println(board[2][2].getImg());
 		boardObj.shiftTile(p, n, magnitude);
 		
 		paintBoard();
-		System.out.println(board[2][2].getImg());
-		System.out.println(board[2][2].getName());
-		System.out.println();
+//		System.out.println(board[2][2].getImg());
+//		System.out.println(board[2][2].getName());
+//		System.out.println();
 		repaint();
 	}
 	public void rotate(int y, int x, boolean right) {
