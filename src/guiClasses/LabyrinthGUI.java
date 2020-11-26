@@ -136,31 +136,27 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		}
 		
 		for (int i = 0; i < 12; i++) {
-			
 			shiftTilesButtons[i] = new JButton();
-			
 			shiftTilesButtons[i].setFocusPainted(false);
 			shiftTilesButtons[i].setContentAreaFilled(false);
 			shiftTilesButtons[i].setOpaque(false);
 			shiftTilesButtons[i].setIcon(new ImageIcon("./res/images/arrow" + (i/3) + ".png"));
-			
-			switch (i/3) {
-			
-			case 0:
-				shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2	, 0, 50, 50);
-				break;
-			case 1:
-				shiftTilesButtons[i].setBounds(570,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
-				break;
-			case 2:
-				shiftTilesButtons[i].setBounds(0,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
-				break;
-			case 3:
-				shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 570, 50, 50);
-				break;
-			
+			switch (i/3) { //top right bottom left
+				case 0:
+					shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2	, 0, 50, 50);
+					break;
+				case 1:
+					shiftTilesButtons[i].setBounds(570,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
+					break;
+				case 2:
+					shiftTilesButtons[i].setBounds(0,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
+					break;
+				case 3:
+					shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 570, 50, 50);
+					break;
 			}
-			
+			final int x = i;
+			shiftTilesButtons[i].addActionListener(e -> shift((x/3)%3, (x/3)%2, 2*(x%3)+2));
 			gamePanel.add(shiftTilesButtons[i]);
 		}
 
@@ -170,7 +166,19 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		mainPanel.add(playerPanel);
 		mainPanel.setVisible(true);
 	}
-	
+	public void shift(int parity, int letter, int magnitude) {
+		char p, n, d;
+		if(parity==0) p = '+';
+		else p = '-';
+		if(letter==0) n = 'c';
+		else n = 'r';
+		boardObj.shiftTile(p, n, magnitude);
+		for (int i=1;i<=7;i++) {
+			for (int j=1;j<=7;j++) {
+				System.out.print(boardObj.getBoard()[i][j].getName()+" ");
+			} System.out.println();
+		}
+	}
 	public void rotate(int y, int x, boolean right) {
 		board[y][x].rotate(90, right, true);
 		freeTile.setIcon(new ImageIcon(new ImageIcon(board[y][x].getImg()).getImage().getScaledInstance(135, 135, 0)));
