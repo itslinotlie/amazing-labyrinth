@@ -180,10 +180,15 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	private void paintBoard() {
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
+				//gamePanel.remove(board[row][col]);
 				if (board[row][col] != null) {
+					board[row][col].setVisible(true);
 					board[row][col].setBounds((board[row][col].getLeft()-1) * (TILE_SIZE)+50, (board[row][col].getDown()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
 					board[row][col].setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
-				}	
+					if (row == 0 || row == 8) {
+						board[row][col].setVisible(false);
+					}
+				}
 			}
 		}
 		System.out.printf("Free is at (%d, %d)\n", boardObj.getY(), boardObj.getX());
