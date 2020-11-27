@@ -60,10 +60,10 @@ public class Board {
 //		y = free.getDown(); x = free.getLeft();
 		if(p=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
-				if(c=='R') swap(n, i, n, i+1);
+				if(c=='r') swap(n, i, n, i+1);
 				else swap(i, n, i+1, n);
 			}
-			if(c=='R') {
+			if(c=='r') {
 				swap(n, mxn, y, x);
 				swap(y, x, n, 0);
 				y = n; x = 0;
@@ -74,24 +74,24 @@ public class Board {
 			}
 		} else { //push to the right or down
 			for (int i=mxn+1;i>=2;i--) {
-				if(c=='R') swap(n, i, n, i-1);
+				if(c=='r') swap(n, i, n, i-1);
 				else swap(i, n, i-1, n);
 			}
-			if(c=='R') {
-//				swap(n, 1, y, x);
+			if(c=='r') {
 				board[n][1] = free;
 				board[n][1].setDown(n);
 				board[n][1].setLeft(1);
 				y = n; x = mxn+1;
 			} else {
-//				swap(1, n, free.getDown(), free.getLeft());
-//				y = mxn+1; x = n;
 				board[1][n] = free;
 				board[1][n].setDown(1);
 				board[1][n].setLeft(n);
 				y = mxn+1; x = n;
 			}
 		}
+//		free = board[y][x];
+//		free.setDown(y);
+//		free.setLeft(x);
 		for (int i=1;i<=mxn+1;i++) System.out.printf("%d | %s @ (%d, %d)\n", i, board[i][n].getName(), board[i][n].getDown(), board[i][n].getLeft());
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
