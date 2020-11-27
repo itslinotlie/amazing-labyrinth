@@ -85,6 +85,9 @@ public class Board {
 			}
 		}
 		tile50 = board[y][x];
+		this.parity = parity;
+		this.letter = letter;
+		this.position = position;
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
 	}
