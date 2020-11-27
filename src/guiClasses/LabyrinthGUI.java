@@ -31,8 +31,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	private JButton endTurnButton = new JButton("End Turn");
 	
 	private JButton[] shiftTilesButtons = new JButton[12];
-	
-	private JLabel freeTile = new JLabel();
+
 	private JLabel playerTurnLabel = new JLabel("Player 1");
 	
 	private ArrayList<JLabel> cards = new ArrayList<JLabel>();
@@ -51,8 +50,12 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 
 	private void createPlayerPanel() {
 		
-		freeTile.setBounds(150, 150, 130, 130);
-		freeTile.setIcon(new ImageIcon(new ImageIcon(board[boardObj.getY()][boardObj.getX()].getImg()).getImage().getScaledInstance(130, 130, 0)));
+		//boardObj.getFreeTile() = new JLabel();
+		boardObj.getFreeTile().setBounds(150, 150, 130, 130);
+		boardObj.getFreeTile().setBackground(Color.RED);
+		boardObj.getFreeTile().setOpaque(true);
+		System.out.println(boardObj.getFreeTile());
+//		boardObj.getFreeTile().setIcon(new ImageIcon(new ImageIcon(board[boardObj.getY()][boardObj.getX()].getImg()).getImage().getScaledInstance(130, 130, 0)));
 
 		rotateLeft.setBounds(125, 300, 50, 50);
 		rotateLeft.setBackground(Color.RED);
@@ -88,16 +91,17 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		playerPanel.setBounds(540, 0, 400, SCREEN_HEIGHT);
 		playerPanel.setBackground(Color.BLACK);
 //		JLabel test = new JLabel();
-		test.setIcon(new ImageIcon(new ImageIcon(board[boardObj.getY()][boardObj.getX()].getImg()).getImage().getScaledInstance(50, 50, 0)));
+		test.setIcon(new ImageIcon(new ImageIcon(boardObj.getFreeTile().getImg()).getImage().getScaledInstance(50, 50, 0)));
 		test.setBounds(700, 500, 500, 50);
 		test.setBackground(Color.WHITE);
 		mainPanel.add(test);
 		playerPanel.add(endTurnButton);
 		playerPanel.add(playerTurnLabel);
-		playerPanel.add(freeTile);
+		playerPanel.add(boardObj.getFreeTile());
 		playerPanel.add(rotateLeft); 
 		playerPanel.add(rotateRight);
 		playerPanel.setVisible(true);
+		System.out.println(boardObj.getFreeTile().getBounds());
 	}
 	static JLabel test = new JLabel();
 	private void addPlayers() {
@@ -129,7 +133,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		gamePanel.setVisible(true);
 		
 		paintBoard();
-		System.out.println(board[3][3].getBounds());
 		
 		for (int row = 1; row < 8; row++) {	
 			for (int col = 1; col < 8; col++) {	
@@ -171,6 +174,9 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		mainPanel.setVisible(true);
 	}
 	public void shift(int parity, int letter, int magnitude) {
+		
+		playerPanel.remove(boardObj.getFreeTile());
+		gamePanel.add(boardObj.getFreeTile());
 		char p, n;
 		if(parity==0) p = '+';
 		else p = '-';
@@ -184,24 +190,18 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	}
 	private void paintBoard() {
 		
-		for (int row = 0; row < 9; row++) {
-			for (int col = 0; col < 9; col++) {
-				//gamePanel.remove(board[row][col]);
+		for (int row = 1; row < 8; row++) {
+			for (int col = 1; col < 8; col++) {
 				if (board[row][col] != null) {
-					board[row][col].setVisible(true);
 					board[row][col].setBounds((board[row][col].getLeft()-1) * (TILE_SIZE)+50, (board[row][col].getDown()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
-					board[row][col].setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
-					if (row == 0 || row == 8) {
-						board[row][col].setVisible(false);
-					}
+					board[row][col].setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));				
 				}
 			}
 		}
-		test.setIcon(new ImageIcon(new ImageIcon(board[boardObj.getY()][boardObj.getX()].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
-		System.out.println(boardObj.getFreeTile().getBounds());
-		System.out.println(boardObj.getFreeTile().getBounds());
-		freeTile.setIcon(new ImageIcon(new ImageIcon(boardObj.getFreeTile().getImg()).getImage().getScaledInstance(130, 130, 0)));
-		//boardObj.getFreeTile().setBounds((boardObj.getFreeTile().getLeft()-1) * (TILE_SIZE)+50, (boardObj.getFreeTile().getDown()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
+		gamePanel.remove(boardObj.getFreeTile());
+		boardObj.getFreeTile().setIcon(new ImageIcon(new ImageIcon(boardObj.getFreeTile().getImg()).getImage().getScaledInstance(130, 130, 0)));
+		boardObj.getFreeTile().setBounds(150,150,130,130);
+		playerPanel.add(boardObj.getFreeTile());
 	}
 	public void debug() {
 		String s = "x";
@@ -214,7 +214,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	}
 	public void rotate(int y, int x, boolean right) {
 		board[y][x].rotate(90, right, true);
-		freeTile.setIcon(new ImageIcon(new ImageIcon(board[y][x].getImg()).getImage().getScaledInstance(135, 135, 0)));
+		//boardObj.getFreeTile().setIcon(new ImageIcon(new ImageIcon(board[y][x].getImg()).getImage().getScaledInstance(135, 135, 0)));
 	}
 	
 	private void createFrame() {
