@@ -90,6 +90,7 @@ public class Board {
 				board[1][n].setDown(1);
 				board[1][n].setLeft(n);
 				y = mxn+1; x = n;
+				
 			}
 		}
 		for (int i=1;i<=mxn+1;i++) System.out.printf("%d | %s @ (%d, %d)\n", i, board[i][n].getName(), board[i][n].getDown(), board[i][n].getLeft());
@@ -119,6 +120,9 @@ public class Board {
 	}
 	public Tile[][] getBoard() {
 		return board;
+	}
+	public Tile getFreeTile() {
+		return board[y][x];
 	}
 	public int getX() {
 		return x;
