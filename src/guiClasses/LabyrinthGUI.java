@@ -255,6 +255,23 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	}
 	
 	private void movePlayer(int direction) throws InterruptedException {
+		int move[][] = {
+			{-TILE_SIZE/10, 0},
+			{TILE_SIZE/10, 0},
+			{0, -TILE_SIZE/10},
+			{0, TILE_SIZE/10}
+		};
+		for (int i=0;i<10;i++) {
+			Thread.sleep(100);
+			int x = playerLabels.get(turn-1).getX()+move[direction][0];
+			int y = playerLabels.get(turn-1).getY()+move[direction][1];
+			int w = playerLabels.get(turn-1).getWidth();
+			int h = playerLabels.get(turn-1).getHeight();
+			playerLabels.get(turn-1).setBounds(x, y, w, h);
+			repaint();
+			System.out.println(playerLabels.get(turn-1).getBounds());
+		}
+
 		switch (direction) {
 		
 		case (0):
