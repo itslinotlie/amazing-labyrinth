@@ -203,6 +203,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	}
 	public void rotate(int y, int x, boolean right) {
 		board[y][x].rotate(90, right, true);
+		boardObj.getFreeTile().setIcon(new ImageIcon(new ImageIcon(boardObj.getFreeTile().getImage()).getImage().getScaledInstance(130, 130, 0)));
 	}
 	private void createFrame() {
 		setLayout(null);
