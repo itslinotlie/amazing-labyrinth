@@ -39,9 +39,12 @@ public class Board {
 					}
 				}
 			}
+
 			free = tiles.pop();
-			free.setDown(mxn+1); free.setLeft(mxn+1);
-			x = y = mxn+1; board[y][x] = free;
+			y = x = mxn+1;
+			free.setDown(y); free.setLeft(x);
+			board[y][x] = free;
+
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR. File not found.");
 		}
@@ -54,31 +57,51 @@ public class Board {
 	//- C 2 --> shifts 2nd col up
 	//+ R 8 --> shifts 8th row to the right (didn't include error checking)
 	public void shiftTile(char p, char c, int n) {
+		System.out.println(p+" "+c+" "+n);
+		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
+		free = board[y][x];
+//		y = free.getDown(); x = free.getLeft();
 		if(p=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
-				if(c=='R') board[n][i] = board[n][i+1];
-				else board[i][n] = board[i+1][n];
+				if(c=='R') swap(n, i, n, i+1);
+				else swap(i, n, i+1, n);
 			}
 			if(c=='R') {
-				board[n][mxn] = free;
-				x = n; y = 0; free = board[x][y];
+				swap(n, mxn, y, x);
+				swap(y, x, n, 0);
+				y = n; x = 0;
 			} else {
-				board[mxn][n] = free;
-				x = 0; y = n; free = board[x][y];
+				swap(mxn, n, y, x);
+				swap(y, x, 0, n);
+				y = 0; x = n;
 			}
 		} else { //push to the right or down
 			for (int i=mxn+1;i>=2;i--) {
-				if(c=='R') board[n][i] = board[n][i-1];
-				else board[i][n] = board[i-1][n];
+				if(c=='R') swap(n, i, n, i-1);
+				else swap(i, n, i-1, n);
 			}
 			if(c=='R') {
-				board[n][1] = free;
-				x = n; y = mxn+1; free = board[x][y];
+				swap(n, 1, y, x);
+//				swap(y, x, n, mxn+1);
+				y = n; x = mxn+1;
 			} else {
 				board[1][n] = free;
-				x = mxn+1; y = n; free = board[x][y];
+				board[1][n].setDown(1);
+				board[1][n].setLeft(n);
+//				swap(1, n, y, x);
+//				swap(y, x, mxn+1, n);
+				y = mxn+1; x = n;
 			}
 		}
+		for (int i=1;i<=mxn+1;i++) System.out.printf("%d | %s @ (%d, %d)\n", i, board[i][n].getName(), board[i][n].getDown(), board[i][n].getLeft());
+		System.out.println("=============================");
+//		for (int i=1;i<=mxn;i++) System.out.println(board[i][n].getName()+" | "+board[i][n].getDown()+" "+board[i][n].getLeft());
+//		System.out.println(free.getName()+" | "+free.getDown()+" "+free.getLeft());
+	}
+	public void swap(int y1, int x1, int y2, int x2) {
+		board[y1][x1] = board[y2][x2];
+		board[y1][x1].setDown(y1);
+		board[y1][x1].setLeft(x1);
 	}
 	//send y and x coords and it'll return a 2d array of the tiles that can be visited from (y, x)
 	public boolean[][] getPath(int y, int x) {
