@@ -8,12 +8,12 @@ import javax.imageio.ImageIO;
 public class Card {
 	private String head = new File("").getAbsolutePath()+"/res/card-images/";
 	private String item;
-	private BufferedImage img;
+	private BufferedImage image;
 	
 	public Card(String item) {
 		this.item = item;
 		try {
-			img = ImageIO.read(new File(head + item + ".png"));
+			image = ImageIO.read(new File(head + item + ".png"));
 		} catch(Exception e) {
 			System.out.println(item + " had a problem loading");
 		}
@@ -23,8 +23,8 @@ public class Card {
 		return item;
 	}
 	
-	public BufferedImage getImg() {
-		return img;
+	public BufferedImage getImage() {
+		return image;
 	}
 
 	@Override
