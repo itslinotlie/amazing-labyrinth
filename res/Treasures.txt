@@ -18,6 +18,7 @@ Owl
 Rat
 Ring
 Scarab
+Skull
 Sorceress
 Spider
 Sword
