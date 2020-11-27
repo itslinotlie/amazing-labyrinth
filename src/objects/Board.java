@@ -5,8 +5,9 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Board {
-	private int x, y, mxn = 7, m[][] = {{-1, 0},{0, 1},{1, 0},{0, -1}};;
+	private int x, y, mxn = 7, position, m[][] = {{-1, 0},{0, 1},{1, 0},{0, -1}};
 	private boolean vis[][] = new boolean[mxn+2][mxn+2];
+	private char parity, letter;
 	private Tile tile50, board[][] = new Tile[mxn+2][mxn+2];
 	public Board() {
 		Stack<Tile> tiles = new Stack<Tile>();
@@ -49,43 +50,49 @@ public class Board {
 			System.out.println("ERROR. File not found.");
 		}
 	}
-	//p: anything for right/down, - to go left/up
-	//c: r to push row, c = to push column
-	//n: row/col number to be pushed
+	//parity: anything for right/down, - to go left/up
+	//letter: r to push row, c = to push column
+	//position: row/col number to be pushed
 	//Sample i/o:
 	//+ r 1 --> shifts 1st row to the right
 	//- c 2 --> shifts 2nd col up
 	//+ r 8 --> shifts 8th row to the right (didn't include error checking)
-	public void shiftTile(char p, char c, int n) {
-		System.out.println(p+" "+c+" "+n);
-		if(p=='-') { //push to the left or up
+	public void shiftTile(char parity, char letter, int position) {
+		System.out.println(parity+" "+letter+" "+position);
+		if(parity=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
-				if(c=='r') swap(n, i, n, i+1);
-				else swap(i, n, i+1, n);
+				if(letter=='r') swap(position, i, position, i+1);
+				else swap(i, position, i+1, position);
 			}
-			if(c=='r') {
-				swap(n, mxn);
-				y = n; x = 0;
+			if(letter=='r') {
+				swap(position, mxn);
+				y = position; x = 0;
 			} else {
-				swap(mxn, n);
-				y = 0; x = n;
+				swap(mxn, position);
+				y = 0; x = position;
 			}
 		} else { //push to the right or down
 			for (int i=mxn+1;i>=2;i--) {
-				if(c=='r') swap(n, i, n, i-1);
-				else swap(i, n, i-1, n);
+				if(letter=='r') swap(position, i, position, i-1);
+				else swap(i, position, i-1, position);
 			}
-			if(c=='r') {
-				swap(n, 1);
-				y = n; x = mxn+1;
+			if(letter=='r') {
+				swap(position, 1);
+				y = position; x = mxn+1;
 			} else {
-				swap(1, n);
-				y = mxn+1; x = n;
+				swap(1, position);
+				y = mxn+1; x = position;
 			}
 		}
 		tile50 = board[y][x];
+		this.parity = parity;
+		this.letter = letter;
+		this.position = position;
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
+	}
+	public boolean checkShiftTile(char parity, char letter, int position) {
+		return !(this.parity!=parity && this.letter==letter && this.position==position);
 	}
 	public void swap(int y1, int x1) {
 		board[y1][x1] = tile50;
