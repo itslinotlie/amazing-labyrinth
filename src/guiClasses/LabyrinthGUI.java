@@ -29,7 +29,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	private JButton rotateLeft = new JButton();
 	private JButton rotateRight = new JButton();
 	private JButton endTurnButton = new JButton("End Turn");
-	
+	 
 	private JButton[] shiftTilesButtons = new JButton[12];
 
 	private JLabel playerTurnLabel = new JLabel("Player 1");
@@ -43,8 +43,9 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		this.playerColours = playerColours;
 		numCards = cards;
 		
-		createPlayerPanel();
 		createBoardPanels();
+		createPlayerPanel();
+		
 		createFrame();
 	}
 
@@ -113,6 +114,12 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		for (int i = 0; i < cards.size(); i++) {
 			cards.get(i).setIcon(new ImageIcon(new ImageIcon(players.get(turn-1).getHand()[i].getImage()).getImage().getScaledInstance(50, 80, 0)));
 		}
+		
+		for (JButton shift : shiftTilesButtons)
+			shift.setEnabled(true);
+		
+		endTurnButton.setEnabled(false);
+		
 		playerTurnLabel.setForeground(players.get(turn-1).getColour());
 		playerTurnLabel.setText("Player " + turn);
 	}
@@ -120,7 +127,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	private void createBoardPanels() {
 		gamePanel.setLayout(null);
 		gamePanel.setBounds(0, 0, 620, 620);
-		//gamePanel.setBackground(Color.DARK_GRAY);
+		gamePanel.setBackground(Color.DARK_GRAY);
 		gamePanel.setVisible(true);
 		paintBoard();
 		
@@ -137,6 +144,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			shiftTilesButtons[i].setContentAreaFilled(false);
 			shiftTilesButtons[i].setOpaque(false);
 			shiftTilesButtons[i].setIcon(new ImageIcon("./res/images/arrow" + (i/3) + ".png"));
+			
 			switch (i/3) {
 				case 0: //top
 					shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2	, 0, 50, 50);
@@ -151,8 +159,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 					shiftTilesButtons[i].setBounds(0,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
 					break;
 			}
-			final int x = i;
-			shiftTilesButtons[i].addActionListener(e -> shift((x/3)%3, (x/3)%2, 2*(x%3)+2));
+			shiftTilesButtons[i].addActionListener(this);
 			gamePanel.add(shiftTilesButtons[i]);
 		}
 
@@ -225,6 +232,17 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		if (event.getSource() == endTurnButton) {
 			nextTurn();
 		}
+		
+		for (int i = 0; i < shiftTilesButtons.length; i++) {
+			if (event.getSource() == shiftTilesButtons[i]) {
+				shift((i/3)%3, (i/3)%2, 2*(i%3)+2);
+				
+				for (JButton shift : shiftTilesButtons)
+					shift.setEnabled(false);
+				
+				endTurnButton.setEnabled(true);
+			}
+		}
 	}
 	@Override
 	public void keyTyped(KeyEvent key) {
@@ -238,6 +256,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		for (int i = 0; i < 8; i++) {
 			if (key.getKeyCode() == keys[i]) {
 				movePlayer(i/2);
+
 			}
 		}
 	}
