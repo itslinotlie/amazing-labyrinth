@@ -92,11 +92,8 @@ public class Board {
 //		free = board[y][x];
 //		free.setDown(y);
 //		free.setLeft(x);
-		for (int i=1;i<=mxn+1;i++) System.out.printf("%d | %s @ (%d, %d)\n", i, board[i][n].getName(), board[i][n].getDown(), board[i][n].getLeft());
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
-//		for (int i=1;i<=mxn;i++) System.out.println(board[i][n].getName()+" | "+board[i][n].getDown()+" "+board[i][n].getLeft());
-//		System.out.println(free.getName()+" | "+free.getDown()+" "+free.getLeft());
 	}
 	public void swap(int y1, int x1, int y2, int x2) {
 		board[y1][x1] = board[y2][x2];
