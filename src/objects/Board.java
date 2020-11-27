@@ -56,7 +56,7 @@ public class Board {
 	//+ R 8 --> shifts 8th row to the right (didn't include error checking)
 	public void shiftTile(char p, char c, int n) {
 		System.out.println(p+" "+c+" "+n);
-		free = board[y][x];
+//		free = board[y][x];
 		if(p=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
 				if(c=='r') swap(n, i, n, i+1);
@@ -67,17 +67,11 @@ public class Board {
 				board[n][mxn].setDown(n);
 				board[n][mxn].setLeft(mxn);
 				y = n; x = 0;
-//				swap(n, mxn, y, x);
-//				swap(y, x, n, 0);
-//				y = n; x = 0;
 			} else {
 				board[mxn][n] = free;
 				board[mxn][n].setDown(mxn);
 				board[mxn][n].setLeft(n);
 				y = 0; x = n;
-//				swap(mxn, n, y, x);
-//				swap(y, x, 0, n);
-//				y = 0; x = n;
 			}
 		} else { //push to the right or down
 			for (int i=mxn+1;i>=2;i--) {
@@ -94,9 +88,9 @@ public class Board {
 				board[1][n].setDown(1);
 				board[1][n].setLeft(n);
 				y = mxn+1; x = n;
-				
 			}
 		}
+		free = board[y][x];
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
 	}
