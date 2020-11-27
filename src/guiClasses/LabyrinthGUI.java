@@ -109,20 +109,28 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			playerLabels.add(new JLabel());
 			
 			if (playerColours[i] == Color.RED) {
-				playerLabels.get(i).setBounds(74, 64, 50, 50);
+				playerLabels.get(i).setBounds(74, 65, 50, 50);
+				players.get(i).setX(0);
+				players.get(i).setY(0);
 				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player0.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 			else if (playerColours[i] == Color.BLUE) {
-				playerLabels.get(i).setBounds(514, 504, 50, 50);
+				players.get(i).setX(6);
+				players.get(i).setY(6);
+				playerLabels.get(i).setBounds(514, 506, 50, 50);
 				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player1.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 				
 			else if (playerColours[i] == Color.YELLOW) {
-				playerLabels.get(i).setBounds(74, 504, 50, 50);
+				players.get(i).setX(0);
+				players.get(i).setY(6);
+				playerLabels.get(i).setBounds(74, 506, 50, 50);
 				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player2.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 			else if (playerColours[i] == Color.GREEN) {
-				playerLabels.get(i).setBounds(514, 64, 50, 50);
+				players.get(i).setX(6);
+				players.get(i).setY(0);
+				playerLabels.get(i).setBounds(514, 65, 50, 50);
 				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player3.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 			
@@ -176,7 +184,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			
 			switch (i/3) {
 				case 0: //top
-					shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2	, 0, 50, 50);
+					shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 0, 50, 50);
 					break;
 				case 1: //right
 					shiftTilesButtons[i].setBounds(570,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
@@ -266,6 +274,23 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			};
 		
 		time = 0;
+		
+		switch (direction) {
+		
+		case (0):
+			players.get(turn-1).setX(players.get(turn-1).getX()-1);
+			break;
+		case (1):
+			players.get(turn-1).setX(players.get(turn-1).getX()+1);
+			break;
+		case (2):
+			players.get(turn-1).setY(players.get(turn-1).getY()-1);
+			break;
+		case (3):
+			players.get(turn-1).setY(players.get(turn-1).getY()+1);
+			break;
+		
+		}
 			
 		Timer timer = new Timer(20, this);
 		timer.start();
@@ -274,19 +299,18 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 				time ++;
 				int x = playerLabels.get(turn-1).getX()+move[direction][0];
 				int y = playerLabels.get(turn-1).getY()+move[direction][1];
-				int w = playerLabels.get(turn-1).getWidth();
-				int h = playerLabels.get(turn-1).getHeight();
-				playerLabels.get(turn-1).setBounds(x, y, w, h);
+				playerLabels.get(turn-1).setBounds(x, y, playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
 				repaint();
 				System.out.println(playerLabels.get(turn-1).getBounds());
 				
 				if (time >= 10) {
+					playerLabels.get(turn-1).setBounds(players.get(turn-1).getX()*TILE_SIZE+70,players.get(turn-1).getY()*TILE_SIZE+65, 50, 50);
+					System.out.println(players.get(turn-1).getX());
 					timer.stop();
 					time = 0;
 				}		
 			}  
 		});  
-
 	}
 	
 	@Override
