@@ -183,15 +183,20 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		debug();
 	}
 	private void paintBoard() {
-		for (int row = 1; row < 8; row++) {
+		for (int row = 1; row < 9; row++) {
 			for (int col = 1; col < 8; col++) {
 				//gamePanel.remove(board[row][col]);
-				board[row][col].setBounds((board[row][col].getLeft()-1) * (TILE_SIZE)+50, (board[row][col].getDown()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
-				board[row][col].setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
+				if (board[row][col] != null) {
+					board[row][col].setBounds((board[row][col].getLeft()-1) * (TILE_SIZE)+50, (board[row][col].getDown()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
+					board[row][col].setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
+				}	
 			}
 		}
 		test.setIcon(new ImageIcon(new ImageIcon(board[boardObj.getY()][boardObj.getX()].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
 		System.out.printf("Free is at (%d, %d)\n", boardObj.getY(), boardObj.getX());
+		System.out.println(boardObj.getFreeTile().getBounds());
+		freeTile.setIcon(new ImageIcon(new ImageIcon(boardObj.getFreeTile().getImg()).getImage().getScaledInstance(130, 130, 0)));
+		//boardObj.getFreeTile().setBounds((boardObj.getFreeTile().getLeft()-1) * (TILE_SIZE)+50, (boardObj.getFreeTile().getDown()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
 	}
 	public void debug() {
 		String s = "x";

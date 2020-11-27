@@ -94,6 +94,7 @@ public class Board {
 				board[1][n].setDown(1);
 				board[1][n].setLeft(n);
 				y = mxn+1; x = n;
+				
 			}
 		}
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
@@ -120,6 +121,9 @@ public class Board {
 	}
 	public Tile[][] getBoard() {
 		return board;
+	}
+	public Tile getFreeTile() {
+		return board[y][x];
 	}
 	public int getX() {
 		return x;
