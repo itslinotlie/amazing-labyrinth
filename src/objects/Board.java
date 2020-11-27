@@ -7,7 +7,7 @@ import java.util.*;
 public class Board {
 	private int x, y, mxn = 7, m[][] = {{-1, 0},{0, 1},{1, 0},{0, -1}};;
 	private boolean vis[][] = new boolean[mxn+2][mxn+2];
-	private Tile free, board[][] = new Tile[mxn+2][mxn+2];
+	private Tile tile50, board[][] = new Tile[mxn+2][mxn+2];
 	public Board() {
 		Stack<Tile> tiles = new Stack<Tile>();
 		Tile tile;
@@ -19,7 +19,7 @@ public class Board {
 			for (int i=0;i<50;i++) {
 				String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
 				String name = in.next();
-				int rot = in.nextInt(), x = in.nextInt(), y = in.nextInt();
+				int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
 				tile = new Tile(letter, name, rot, y, x);
 				if(i<16) { //the x and y are flipped in the txt file...
 					tile.rotate(rot*90, true, false);
@@ -39,10 +39,10 @@ public class Board {
 					}
 				}
 			}
-			free = tiles.pop();
+			tile50 = tiles.pop();
 			y = x = mxn+1;
-			free.setDown(y); free.setLeft(x);
-			board[y][x] = free;
+			tile50.setDown(y); tile50.setLeft(x);
+			board[y][x] = tile50;
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR. File not found.");
 		}
@@ -51,26 +51,21 @@ public class Board {
 	//c: r to push row, c = to push column
 	//n: row/col number to be pushed
 	//Sample i/o:
-	//+ R 1 --> shifts 1st row to the right
-	//- C 2 --> shifts 2nd col up
-	//+ R 8 --> shifts 8th row to the right (didn't include error checking)
+	//+ r 1 --> shifts 1st row to the right
+	//- c 2 --> shifts 2nd col up
+	//+ r 8 --> shifts 8th row to the right (didn't include error checking)
 	public void shiftTile(char p, char c, int n) {
 		System.out.println(p+" "+c+" "+n);
-//		free = board[y][x];
 		if(p=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
 				if(c=='r') swap(n, i, n, i+1);
 				else swap(i, n, i+1, n);
 			}
 			if(c=='r') {
-				board[n][mxn] = free;
-				board[n][mxn].setDown(n);
-				board[n][mxn].setLeft(mxn);
+				swap(n, mxn);
 				y = n; x = 0;
 			} else {
-				board[mxn][n] = free;
-				board[mxn][n].setDown(mxn);
-				board[mxn][n].setLeft(n);
+				swap(mxn, n);
 				y = 0; x = n;
 			}
 		} else { //push to the right or down
@@ -79,20 +74,21 @@ public class Board {
 				else swap(i, n, i-1, n);
 			}
 			if(c=='r') {
-				board[n][1] = free;
-				board[n][1].setDown(n);
-				board[n][1].setLeft(1);
+				swap(n, 1);
 				y = n; x = mxn+1;
 			} else {
-				board[1][n] = free;
-				board[1][n].setDown(1);
-				board[1][n].setLeft(n);
+				swap(1, n);
 				y = mxn+1; x = n;
 			}
 		}
-		free = board[y][x];
+		tile50 = board[y][x];
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
+	}
+	public void swap(int y1, int x1) {
+		board[y1][x1] = tile50;
+		board[y1][x1].setDown(y1);
+		board[y1][x1].setLeft(x1);
 	}
 	public void swap(int y1, int x1, int y2, int x2) {
 		board[y1][x1] = board[y2][x2];

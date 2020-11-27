@@ -209,7 +209,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		board[y][x].rotate(90, right, true);
 		freeTile.setIcon(new ImageIcon(new ImageIcon(board[y][x].getImg()).getImage().getScaledInstance(135, 135, 0)));
 	}
-	
 	private void createFrame() {
 		setLayout(null);
 		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -222,23 +221,19 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		add(mainPanel);
 		repaint();
 	}
-	
 	private void movePlayer(int direction) {
 		System.out.println(direction);
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == endTurnButton) {
 			nextTurn();
 		}
 	}
-
 	@Override
 	public void keyTyped(KeyEvent key) {
 		
 	}
-
 	@Override
 	public void keyPressed(KeyEvent key) {
 		
