@@ -39,12 +39,10 @@ public class Board {
 					}
 				}
 			}
-
 			free = tiles.pop();
 			y = x = mxn+1;
 			free.setDown(y); free.setLeft(x);
 			board[y][x] = free;
-
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR. File not found.");
 		}
@@ -58,7 +56,6 @@ public class Board {
 	//+ R 8 --> shifts 8th row to the right (didn't include error checking)
 	public void shiftTile(char p, char c, int n) {
 		System.out.println(p+" "+c+" "+n);
-		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		free = board[y][x];
 //		y = free.getDown(); x = free.getLeft();
 		if(p=='-') { //push to the left or up
@@ -81,19 +78,22 @@ public class Board {
 				else swap(i, n, i-1, n);
 			}
 			if(c=='R') {
-				swap(n, 1, y, x);
-//				swap(y, x, n, mxn+1);
+//				swap(n, 1, y, x);
+				board[n][1] = free;
+				board[n][1].setDown(n);
+				board[n][1].setLeft(1);
 				y = n; x = mxn+1;
 			} else {
+//				swap(1, n, free.getDown(), free.getLeft());
+//				y = mxn+1; x = n;
 				board[1][n] = free;
 				board[1][n].setDown(1);
 				board[1][n].setLeft(n);
-//				swap(1, n, y, x);
-//				swap(y, x, mxn+1, n);
 				y = mxn+1; x = n;
 			}
 		}
 		for (int i=1;i<=mxn+1;i++) System.out.printf("%d | %s @ (%d, %d)\n", i, board[i][n].getName(), board[i][n].getDown(), board[i][n].getLeft());
+		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
 //		for (int i=1;i<=mxn;i++) System.out.println(board[i][n].getName()+" | "+board[i][n].getDown()+" "+board[i][n].getLeft());
 //		System.out.println(free.getName()+" | "+free.getDown()+" "+free.getLeft());

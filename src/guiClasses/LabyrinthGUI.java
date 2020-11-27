@@ -140,18 +140,18 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 			shiftTilesButtons[i].setContentAreaFilled(false);
 			shiftTilesButtons[i].setOpaque(false);
 			shiftTilesButtons[i].setIcon(new ImageIcon("./res/images/arrow" + (i/3) + ".png"));
-			switch (i/3) { //top right bottom left
-				case 0:
+			switch (i/3) {
+				case 0: //top
 					shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2	, 0, 50, 50);
 					break;
-				case 1:
+				case 1: //right
 					shiftTilesButtons[i].setBounds(570,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
 					break;
-				case 2:
-					shiftTilesButtons[i].setBounds(0,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
-					break;
-				case 3:
+				case 2: //bottom
 					shiftTilesButtons[i].setBounds(TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 570, 50, 50);
+					break;
+				case 3: //left
+					shiftTilesButtons[i].setBounds(0,TILE_SIZE + 65 +(i%3) * TILE_SIZE * 2, 50, 50);
 					break;
 			}
 			final int x = i;
@@ -165,34 +165,35 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		mainPanel.add(playerPanel);
 		mainPanel.setVisible(true);
 	}
+	public void shift(int parity, int letter, int magnitude) {
+		char p, n;
+		if(parity==0) p = '+';
+		else p = '-';
+		if(letter==0) n = 'c';
+		else n = 'r';
+
+		boardObj.shiftTile(p, n, magnitude);
+		paintBoard();
+		repaint();
+		debug();
+	}
 	private void paintBoard() {
-		
-		for (int row = 1; row < 8; row++) {	
-			for (int col = 1; col < 8; col++) {	
+		for (int row = 1; row < 8; row++) {
+			for (int col = 1; col < 8; col++) {
 				//gamePanel.remove(board[row][col]);
 				board[row][col].setBounds((board[row][col].getLeft()-1) * (TILE_SIZE)+50, (board[row][col].getDown()-1) * (TILE_SIZE) + 50, TILE_SIZE, TILE_SIZE);
 				board[row][col].setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
 			}
 		}
-		
 	}
-
-	public void shift(int parity, int letter, int magnitude) {
-		char p, n, d;
-		if(parity==0) p = '+';
-		else p = '-';
-		if(letter==0) n = 'c';
-		else n = 'r';
-		
-//		System.out.println(board[2][2].getName());
-//		System.out.println(board[2][2].getImg());
-		boardObj.shiftTile(p, n, magnitude);
-		
-		paintBoard();
-//		System.out.println(board[2][2].getImg());
-//		System.out.println(board[2][2].getName());
-//		System.out.println();
-		repaint();
+	public void debug() {
+		String s = "x";
+		for (int i=0;i<=8;i++) {
+			for (int j=0;j<=8;j++) {
+				if(board[i][j]==null) System.out.printf("%15s ", s);
+				else System.out.printf("%15s ", board[i][j].getName());
+			} System.out.println();
+		}
 	}
 	public void rotate(int y, int x, boolean right) {
 		board[y][x].rotate(90, right, true);
