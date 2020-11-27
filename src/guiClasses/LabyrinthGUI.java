@@ -3,6 +3,8 @@ package guiClasses;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.*;
@@ -40,7 +42,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 
 	private ArrayList<Player> players = new ArrayList<Player>();
 	
-	private Timer movementTimer = new Timer(1000, this);
+	private int time = 0;
 	
 	public LabyrinthGUI(int cards, Color[] playerColours, boolean continueGame) {
 		
@@ -255,65 +257,36 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	}
 	
 	private void movePlayer(int direction) throws InterruptedException {
+		
 		int move[][] = {
-			{-TILE_SIZE/10, 0},
-			{TILE_SIZE/10, 0},
-			{0, -TILE_SIZE/10},
-			{0, TILE_SIZE/10}
-		};
-		for (int i=0;i<10;i++) {
-			Thread.sleep(100);
-			int x = playerLabels.get(turn-1).getX()+move[direction][0];
-			int y = playerLabels.get(turn-1).getY()+move[direction][1];
-			int w = playerLabels.get(turn-1).getWidth();
-			int h = playerLabels.get(turn-1).getHeight();
-			playerLabels.get(turn-1).setBounds(x, y, w, h);
-			repaint();
-			System.out.println(playerLabels.get(turn-1).getBounds());
-		}
+				{-TILE_SIZE/10, 0},
+				{TILE_SIZE/10, 0},
+				{0, -TILE_SIZE/10},
+				{0, TILE_SIZE/10}
+			};
+		
+		time = 0;
+			
+		Timer timer = new Timer(20, this);
+		timer.start();
+		timer.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent event){
+				time ++;
+				int x = playerLabels.get(turn-1).getX()+move[direction][0];
+				int y = playerLabels.get(turn-1).getY()+move[direction][1];
+				int w = playerLabels.get(turn-1).getWidth();
+				int h = playerLabels.get(turn-1).getHeight();
+				playerLabels.get(turn-1).setBounds(x, y, w, h);
+				repaint();
+				System.out.println(playerLabels.get(turn-1).getBounds());
+				
+				if (time >= 10) {
+					timer.stop();
+					time = 0;
+				}		
+			}  
+		});  
 
-		switch (direction) {
-		
-		case (0):
-			for (int i = 0; i < 10; i++) {
-				Thread.sleep(100);
-				playerLabels.get(turn-1).setBounds(playerLabels.get(turn-1).getX() - TILE_SIZE/10, playerLabels.get(turn-1).getY(),
-					playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
-				repaint();
-				System.out.println(playerLabels.get(turn-1).getBounds());
-			}
-			break;
-		
-		case (1):
-			for (int i = 0; i < 10; i++) {
-				Thread.sleep(100);
-				playerLabels.get(turn-1).setBounds(playerLabels.get(turn-1).getX() + TILE_SIZE/10, playerLabels.get(turn-1).getY(),
-					playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
-				repaint();
-				System.out.println(playerLabels.get(turn-1).getBounds());
-			}
-			break;
-		
-		case (2):
-			for (int i = 0; i < 10; i++) {
-				Thread.sleep(100);
-				playerLabels.get(turn-1).setBounds(playerLabels.get(turn-1).getX(), playerLabels.get(turn-1).getY() - TILE_SIZE/10,
-					playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
-				repaint();
-				System.out.println(playerLabels.get(turn-1).getBounds());
-			}
-			break;
-		
-		case (3):
-			for (int i = 0; i < 10; i++) {
-				Thread.sleep(100);
-				playerLabels.get(turn-1).setBounds(playerLabels.get(turn-1).getX(), playerLabels.get(turn-1).getY() + TILE_SIZE/10,
-					playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
-				repaint();
-				System.out.println(playerLabels.get(turn-1).getBounds());
-			}
-			break;
-		}
 	}
 	
 	@Override
@@ -343,7 +316,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		int[] keys = {KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_S, KeyEvent.VK_DOWN};
 		
 		for (int i = 0; i < 8; i++) {
-			if (key.getKeyCode() == keys[i]) {
+			if (key.getKeyCode() == keys[i] && time == 0) {
 				try {
 					movePlayer(i/2);
 				} catch (InterruptedException e) {
