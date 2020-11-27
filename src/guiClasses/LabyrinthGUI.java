@@ -87,6 +87,11 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		playerPanel.setLayout(null);
 		playerPanel.setBounds(540, 0, 400, SCREEN_HEIGHT);
 		playerPanel.setBackground(Color.BLACK);
+//		JLabel test = new JLabel();
+		test.setIcon(new ImageIcon(new ImageIcon(board[boardObj.getY()][boardObj.getX()].getImg()).getImage().getScaledInstance(50, 50, 0)));
+		test.setBounds(700, 500, 500, 50);
+		test.setBackground(Color.WHITE);
+		mainPanel.add(test);
 		playerPanel.add(endTurnButton);
 		playerPanel.add(playerTurnLabel);
 		playerPanel.add(freeTile);
@@ -94,7 +99,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		playerPanel.add(rotateRight);
 		playerPanel.setVisible(true);
 	}
-
+	static JLabel test = new JLabel();
 	private void addPlayers() {
 		
 		for (int i = 0; i < playerColours.length; i++) {
@@ -185,6 +190,8 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 				board[row][col].setIcon(new ImageIcon(new ImageIcon(board[row][col].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
 			}
 		}
+		test.setIcon(new ImageIcon(new ImageIcon(board[boardObj.getY()][boardObj.getX()].getImg()).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, 0)));
+		System.out.printf("Free is at (%d, %d)\n", boardObj.getY(), boardObj.getX());
 	}
 	public void debug() {
 		String s = "x";

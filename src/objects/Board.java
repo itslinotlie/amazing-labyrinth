@@ -57,20 +57,27 @@ public class Board {
 	public void shiftTile(char p, char c, int n) {
 		System.out.println(p+" "+c+" "+n);
 		free = board[y][x];
-//		y = free.getDown(); x = free.getLeft();
 		if(p=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
 				if(c=='r') swap(n, i, n, i+1);
 				else swap(i, n, i+1, n);
 			}
 			if(c=='r') {
-				swap(n, mxn, y, x);
-				swap(y, x, n, 0);
+				board[n][mxn] = free;
+				board[n][mxn].setDown(n);
+				board[n][mxn].setLeft(mxn);
 				y = n; x = 0;
+//				swap(n, mxn, y, x);
+//				swap(y, x, n, 0);
+//				y = n; x = 0;
 			} else {
-				swap(mxn, n, y, x);
-				swap(y, x, 0, n);
+				board[mxn][n] = free;
+				board[mxn][n].setDown(mxn);
+				board[mxn][n].setLeft(n);
 				y = 0; x = n;
+//				swap(mxn, n, y, x);
+//				swap(y, x, 0, n);
+//				y = 0; x = n;
 			}
 		} else { //push to the right or down
 			for (int i=mxn+1;i>=2;i--) {
@@ -89,9 +96,6 @@ public class Board {
 				y = mxn+1; x = n;
 			}
 		}
-//		free = board[y][x];
-//		free.setDown(y);
-//		free.setLeft(x);
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
 	}
