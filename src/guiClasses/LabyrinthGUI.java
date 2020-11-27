@@ -63,7 +63,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		System.out.println(boardObj.getFreeTile());
 
 		rotateLeft.setBounds(125, 300, 50, 50);
-		rotateLeft.setIcon(new ImageIcon(new ImageIcon("./res/images/player0.png").getImage().getScaledInstance(50, 50, 0)));
+		rotateLeft.setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player0.png").getImage().getScaledInstance(50, 50, 0)));
 		rotateLeft.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), false)); //lambdas op
 		
 		rotateRight.setBounds(245, 300, 50, 50);
@@ -110,20 +110,20 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			
 			if (playerColours[i] == Color.RED) {
 				playerLabels.get(i).setBounds(74, 64, 50, 50);
-				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player0.png").getImage().getScaledInstance(30, 30, 0)));
+				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player0.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 			else if (playerColours[i] == Color.BLUE) {
 				playerLabels.get(i).setBounds(514, 504, 50, 50);
-				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player1.png").getImage().getScaledInstance(30, 30, 0)));
+				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player1.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 				
 			else if (playerColours[i] == Color.YELLOW) {
 				playerLabels.get(i).setBounds(74, 504, 50, 50);
-				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player2.png").getImage().getScaledInstance(30, 30, 0)));
+				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player2.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 			else if (playerColours[i] == Color.GREEN) {
 				playerLabels.get(i).setBounds(514, 64, 50, 50);
-				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player3.png").getImage().getScaledInstance(30, 30, 0)));
+				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player3.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 			
 			gamePanel.add(playerLabels.get(i));
@@ -172,7 +172,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			shiftTilesButtons[i].setFocusPainted(false);
 			shiftTilesButtons[i].setContentAreaFilled(false);
 			shiftTilesButtons[i].setOpaque(false);
-			shiftTilesButtons[i].setIcon(new ImageIcon("./res/images/arrow" + (i/3) + ".png"));
+			shiftTilesButtons[i].setIcon(new ImageIcon("./res/gui-images/arrow" + (i/3) + ".png"));
 			
 			switch (i/3) {
 				case 0: //top

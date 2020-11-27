@@ -23,7 +23,7 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 	
 	private static final ImageIcon LABYRINTH_TEXT = new ImageIcon(new ImageIcon("./res/labyrinth-text.png").getImage().getScaledInstance(SCREEN_WIDTH, 200, 0));
 	private static final ImageIcon LABYRINTH_TEXT2 = new ImageIcon(new ImageIcon("./res/labyrinth-text-darker.png").getImage().getScaledInstance(SCREEN_WIDTH, 200, 0));
-	private static final ImageIcon SETUP_BACKGROUND = new ImageIcon("./res/images/startup-background.png");
+	private static final ImageIcon SETUP_BACKGROUND = new ImageIcon("./res/gui-images/startup-background.png");
 	
 	private ArrayList<Color> playerColours = new ArrayList<Color>();
 	
@@ -128,7 +128,7 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 		
 		addPlayerButton.setBounds(SCREEN_WIDTH/2-300, 320, 40, 40);
 		addPlayerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		addPlayerButton.setIcon(new ImageIcon(new ImageIcon("./res/images/addPlayer.png").getImage().getScaledInstance(40, 40, 0)));
+		addPlayerButton.setIcon(new ImageIcon(new ImageIcon("./res/gui-images/addPlayer.png").getImage().getScaledInstance(40, 40, 0)));
 		addPlayerButton.setBorder(null);
 		addPlayerButton.setContentAreaFilled(false);
 		addPlayerButton.setFocusPainted(false);
@@ -136,7 +136,7 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 		
 		removePlayerButton.setBounds(SCREEN_WIDTH/2-250, 370, 40, 40);
 		removePlayerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		removePlayerButton.setIcon(new ImageIcon(new ImageIcon("./res/images/removePlayer.png").getImage().getScaledInstance(40, 40, 0)));
+		removePlayerButton.setIcon(new ImageIcon(new ImageIcon("./res/gui-images/removePlayer.png").getImage().getScaledInstance(40, 40, 0)));
 		removePlayerButton.setBorder(null);
 		removePlayerButton.setVisible(false);
 		removePlayerButton.setContentAreaFilled(false);
@@ -149,14 +149,14 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 		
 		addCardButton.setBounds(SCREEN_WIDTH/2+130, 220, 40, 40);
 		addCardButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		addCardButton.setIcon(new ImageIcon("./res/images/upArrow.png"));
+		addCardButton.setIcon(new ImageIcon("./res/gui-images/upArrow.png"));
 		addCardButton.setContentAreaFilled(false);
 		addCardButton.setFocusPainted(false);
 		addCardButton.addActionListener(this);
 		
 		removeCardButton.setBounds(SCREEN_WIDTH/2+130, 270, 40, 40);
 		removeCardButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		removeCardButton.setIcon(new ImageIcon("./res/images/downArrow.png"));
+		removeCardButton.setIcon(new ImageIcon("./res/gui-images/downArrow.png"));
 		removeCardButton.setContentAreaFilled(false);
 		removeCardButton.setFocusPainted(false);
 		removeCardButton.addActionListener(this);
