@@ -8,7 +8,7 @@ import javax.swing.border.*;
 
 import objects.*;
 
-public class LabyrinthGUI extends JFrame implements ActionListener{
+public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	
 	private static final int SCREEN_WIDTH = 900, SCREEN_HEIGHT = 655, TILE_SIZE = 520/7;
 	
@@ -203,11 +203,18 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		setLayout(null);
 		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 		setTitle("Amazing Labyrinth");
+		addKeyListener(this);
+		setFocusable(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setVisible(true);
 		add(mainPanel);
 		repaint();
+
+	}
+	
+	private void movePlayer(int direction) {
+		System.out.println(direction);
 	}
 
 	@Override
@@ -215,6 +222,28 @@ public class LabyrinthGUI extends JFrame implements ActionListener{
 		if (event.getSource() == endTurnButton) {
 			nextTurn();
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent key) {
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent key) {
+		
+		int[] keys = {KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_S, KeyEvent.VK_DOWN};
+		
+		for (int i = 0; i < 8; i++) {
+			if (key.getKeyCode() == keys[i]) {
+				movePlayer(i/2);
+			}
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 	
