@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.*;
 
 import objects.*;
@@ -35,8 +36,11 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	private JLabel playerTurnLabel = new JLabel("Player 1");
 	
 	private ArrayList<JLabel> cards = new ArrayList<JLabel>();
-	
+	private ArrayList<JLabel> playerLabels = new ArrayList<JLabel>();
+
 	private ArrayList<Player> players = new ArrayList<Player>();
+	
+	private Timer movementTimer = new Timer(1000, this);
 	
 	public LabyrinthGUI(int cards, Color[] playerColours, boolean continueGame) {
 		
@@ -57,7 +61,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		System.out.println(boardObj.getFreeTile());
 
 		rotateLeft.setBounds(125, 300, 50, 50);
-		rotateLeft.setBackground(Color.RED);
+		rotateLeft.setIcon(new ImageIcon(new ImageIcon("./res/images/player0.png").getImage().getScaledInstance(50, 50, 0)));
 		rotateLeft.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), false)); //lambdas op
 		
 		rotateRight.setBounds(245, 300, 50, 50);
@@ -79,7 +83,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			playerPanel.add(card);
 		}
 		
-		addPlayers();
 		nextTurn();
 		
 		playerTurnLabel.setBounds(125, 50, 180, 40);
@@ -95,13 +98,35 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		playerPanel.add(rotateLeft); 
 		playerPanel.add(rotateRight);
 		playerPanel.setVisible(true);
-		System.out.println(boardObj.getFreeTile().getBounds());
 	}
+	
 	private void addPlayers() {
 		
 		for (int i = 0; i < playerColours.length; i++) {
-			players.add(new Player(numCards, playerColours[i], true));
+			players.add(new Player(numCards, playerColours[i], true, 0, 0));
+			playerLabels.add(new JLabel());
+			
+			if (playerColours[i] == Color.RED) {
+				playerLabels.get(i).setBounds(74, 64, 50, 50);
+				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player0.png").getImage().getScaledInstance(30, 30, 0)));
+			}
+			else if (playerColours[i] == Color.BLUE) {
+				playerLabels.get(i).setBounds(514, 504, 50, 50);
+				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player1.png").getImage().getScaledInstance(30, 30, 0)));
+			}
+				
+			else if (playerColours[i] == Color.YELLOW) {
+				playerLabels.get(i).setBounds(74, 504, 50, 50);
+				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player2.png").getImage().getScaledInstance(30, 30, 0)));
+			}
+			else if (playerColours[i] == Color.GREEN) {
+				playerLabels.get(i).setBounds(514, 64, 50, 50);
+				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/images/player3.png").getImage().getScaledInstance(30, 30, 0)));
+			}
+			
+			gamePanel.add(playerLabels.get(i));
 		}
+		
 	}
 	
 	private void nextTurn() {
@@ -130,6 +155,8 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		gamePanel.setBackground(Color.DARK_GRAY);
 		gamePanel.setVisible(true);
 		paintBoard();
+		
+		addPlayers();
 		
 		for (int row = 1; row < 8; row++) {	
 			for (int col = 1; col < 8; col++) {	
@@ -162,7 +189,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			shiftTilesButtons[i].addActionListener(this);
 			gamePanel.add(shiftTilesButtons[i]);
 		}
-
+		
 		mainPanel.setLayout(null);
 		mainPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		mainPanel.add(gamePanel);
@@ -196,9 +223,9 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		boardObj.getFreeTile().setIcon(new ImageIcon(new ImageIcon(boardObj.getFreeTile().getImage()).getImage().getScaledInstance(130, 130, 0)));
 		boardObj.getFreeTile().setBounds(150,150,130,130);
 		playerPanel.add(boardObj.getFreeTile());
-		System.out.printf("Free is at (%d, %d)\n", boardObj.getY(), boardObj.getX());
-		System.out.println(boardObj.getFreeTile().getBounds());
+
 	}
+	
 	public void debug() {
 		String s = "x";
 		for (int i=0;i<=8;i++) {
@@ -208,10 +235,12 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			} System.out.println();
 		}
 	}
+	
 	public void rotate(int y, int x, boolean right) {
 		board[y][x].rotate(90, right, true);
 		boardObj.getFreeTile().setIcon(new ImageIcon(new ImageIcon(boardObj.getFreeTile().getImage()).getImage().getScaledInstance(130, 130, 0)));
 	}
+	
 	private void createFrame() {
 		setLayout(null);
 		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -224,9 +253,52 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		add(mainPanel);
 		repaint();
 	}
-	private void movePlayer(int direction) {
-		System.out.println(direction);
+	
+	private void movePlayer(int direction) throws InterruptedException {
+		switch (direction) {
+		
+		case (0):
+			for (int i = 0; i < 10; i++) {
+				Thread.sleep(100);
+				playerLabels.get(turn-1).setBounds(playerLabels.get(turn-1).getX() - TILE_SIZE/10, playerLabels.get(turn-1).getY(),
+					playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
+				repaint();
+				System.out.println(playerLabels.get(turn-1).getBounds());
+			}
+			break;
+		
+		case (1):
+			for (int i = 0; i < 10; i++) {
+				Thread.sleep(100);
+				playerLabels.get(turn-1).setBounds(playerLabels.get(turn-1).getX() + TILE_SIZE/10, playerLabels.get(turn-1).getY(),
+					playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
+				repaint();
+				System.out.println(playerLabels.get(turn-1).getBounds());
+			}
+			break;
+		
+		case (2):
+			for (int i = 0; i < 10; i++) {
+				Thread.sleep(100);
+				playerLabels.get(turn-1).setBounds(playerLabels.get(turn-1).getX(), playerLabels.get(turn-1).getY() - TILE_SIZE/10,
+					playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
+				repaint();
+				System.out.println(playerLabels.get(turn-1).getBounds());
+			}
+			break;
+		
+		case (3):
+			for (int i = 0; i < 10; i++) {
+				Thread.sleep(100);
+				playerLabels.get(turn-1).setBounds(playerLabels.get(turn-1).getX(), playerLabels.get(turn-1).getY() + TILE_SIZE/10,
+					playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
+				repaint();
+				System.out.println(playerLabels.get(turn-1).getBounds());
+			}
+			break;
+		}
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == endTurnButton) {
@@ -255,8 +327,11 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		
 		for (int i = 0; i < 8; i++) {
 			if (key.getKeyCode() == keys[i]) {
-				movePlayer(i/2);
-
+				try {
+					movePlayer(i/2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
