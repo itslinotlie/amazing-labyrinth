@@ -20,10 +20,10 @@ public class Board {
 				String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
 				String name = in.next();
 				int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
-				tile = new Tile(letter, name, rot, y, x);
-				if(i<16) { //the x and y are flipped in the txt file...
+				tile = new Tile(letter, name, rot, x, y);
+				if(i<16) {
 					tile.rotate(rot*90, true, false);
-					board[x][y] = tile;
+					board[y][x] = tile;
 				}
 				else tiles.add(tile);
 			}
