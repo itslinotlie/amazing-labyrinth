@@ -5,8 +5,9 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Board {
-	private int x, y, mxn = 7, m[][] = {{-1, 0},{0, 1},{1, 0},{0, -1}};
+	private int x, y, mxn = 7, position, m[][] = {{-1, 0},{0, 1},{1, 0},{0, -1}};
 	private boolean vis[][] = new boolean[mxn+2][mxn+2];
+	private char parity, letter;
 	private Tile tile50, board[][] = new Tile[mxn+2][mxn+2];
 	public Board() {
 		Stack<Tile> tiles = new Stack<Tile>();
@@ -49,9 +50,9 @@ public class Board {
 			System.out.println("ERROR. File not found.");
 		}
 	}
-	//p: anything for right/down, - to go left/up
-	//c: r to push row, c = to push column
-	//n: row/col number to be pushed
+	//parity: anything for right/down, - to go left/up
+	//letter: r to push row, c = to push column
+	//position: row/col number to be pushed
 	//Sample i/o:
 	//+ r 1 --> shifts 1st row to the right
 	//- c 2 --> shifts 2nd col up
@@ -86,6 +87,9 @@ public class Board {
 		tile50 = board[y][x];
 		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
 		System.out.println("=============================");
+	}
+	public boolean checkShiftTile(char parity, char letter, int position) {
+		return !(this.parity!=parity && this.letter==letter && this.position==position);
 	}
 	public void swap(int y1, int x1) {
 		board[y1][x1] = tile50;
