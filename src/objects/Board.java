@@ -25,7 +25,9 @@ public class Board {
 					tile.rotate(rot*90, true, false);
 					board[y][x] = tile;
 				}
-				else tiles.add(tile);
+				else {
+					tiles.add(tile);
+				}
 			}
 			Collections.shuffle(tiles);
 
@@ -97,7 +99,9 @@ public class Board {
 	}
 	//send y and x coords and it'll return a 2d array of the tiles that can be visited from (y, x)
 	public boolean[][] getPath(int y, int x) {
-		for (int i=0;i<=mxn+1;i++) Arrays.fill(vis[i], false);
+		for (int i=0;i<=mxn+1;i++) {
+			Arrays.fill(vis[i], false);
+		}
 		dfs(y, x);
 		return vis;
 	}
@@ -105,7 +109,8 @@ public class Board {
 		vis[y][x] = true;
 		for (int i=0;i<4;i++) {
 			int r = y+m[i][0], c = x+m[i][1];
-			if(r<=0 || r>mxn || c<=0 || c>mxn || vis[r][c] || !board[y][x].getMove()[i] || !board[r][c].getMove()[(i+2)%4]) continue;
+			if(r<=0 || r>mxn || c<=0 || c>mxn || vis[r][c]) continue;
+			if(!board[y][x].getMove()[i] || !board[r][c].getMove()[(i+2)%4]) continue;
 			dfs(r, c);
 		}
 	}

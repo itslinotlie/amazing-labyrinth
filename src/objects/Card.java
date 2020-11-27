@@ -18,15 +18,12 @@ public class Card {
 			System.out.println(item + " had a problem loading");
 		}
 	}
-	
 	public String getItem() {
 		return item;
 	}
-	
 	public BufferedImage getImage() {
 		return image;
 	}
-
 	@Override
 	public String toString() {
 		return "Card [item=" + item + "]";
