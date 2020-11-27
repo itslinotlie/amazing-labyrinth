@@ -4,6 +4,8 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.*;
 
 import javax.swing.*;
@@ -11,7 +13,7 @@ import javax.swing.border.*;
 import javax.swing.text.*;
 
 @SuppressWarnings("serial")
-public class StartScreenGUI extends JFrame implements ActionListener{
+public class StartScreenGUI extends JFrame implements ActionListener, KeyListener{
 	
 	private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 	
@@ -364,5 +366,23 @@ public class StartScreenGUI extends JFrame implements ActionListener{
 			}
 		}
 		repaint();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		System.out.println("hello world");
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
