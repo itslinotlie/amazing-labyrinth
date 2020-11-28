@@ -230,6 +230,10 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
                 if(parity==0) movePlayer(2, i);
                 else movePlayer(0, i);
             }
+		    else if(letter!=0 && players.get(i).getY()==magnitude) {
+		        if(parity==0) movePlayer(1, i);
+		        else movePlayer(3, i);
+            }
         }
 		paintBoard();
 		repaint();
@@ -314,7 +318,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
             case (1):
                 players.get(turny).setX(players.get(turny).getX()+1);
                 if(players.get(turny).getX()==8) {
-                    players.get(turny).setY(1);
+                    players.get(turny).setX(1);
                 }
                 break;
             case (2):
