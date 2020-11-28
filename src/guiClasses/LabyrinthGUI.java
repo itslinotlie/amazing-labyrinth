@@ -62,10 +62,12 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		System.out.println(boardObj.getFreeTile());
 
 		rotateLeft.setBounds(125, 300, 50, 50);
+		rotateLeft.setFocusable(false);
 		rotateLeft.setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player0.png").getImage().getScaledInstance(50, 50, 0)));
 		rotateLeft.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), false)); //lambdas op
 		
 		rotateRight.setBounds(245, 300, 50, 50);
+		rotateRight.setFocusable(false);
 		rotateRight.setBackground(Color.GREEN);
 		rotateRight.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), true));
 		
@@ -134,7 +136,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 
 			}
 
-			
 			gamePanel.add(playerLabels.get(i));
 		}
 		
@@ -178,6 +179,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 
 		for (int i = 0; i < 12; i++) {
 			shiftTilesButtons[i] = new JButton();
+			shiftTilesButtons[i].setFocusable(false);
 			shiftTilesButtons[i].setFocusPainted(false);
 			shiftTilesButtons[i].setContentAreaFilled(false);
 			shiftTilesButtons[i].setOpaque(false);
@@ -208,8 +210,10 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		mainPanel.setVisible(true);
 	}
 	public void shift(int parity, int letter, int magnitude) {
+		
 		playerPanel.remove(boardObj.getFreeTile());
 		gamePanel.add(boardObj.getFreeTile());
+		
 		char p, n;
 		if(parity==0) p = '+';
 		else p = '-';
@@ -328,20 +332,23 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 					shift.setEnabled(false);
 				
 				endTurnButton.setEnabled(true);
-			}
+			}	
 		}
 	}
 	@Override
 	public void keyTyped(KeyEvent key) {
-		
 	}
+	
 	@Override
 	public void keyPressed(KeyEvent key) {
 		
 		int[] keys = {KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_S, KeyEvent.VK_DOWN};
 		
 		for (int i = 0; i < 8; i++) {
-			if (key.getKeyCode() == keys[i] && time == 0) {
+			int move[][] = {{-1, 0},{1, 0},{0, -1},{0, 1}};
+			System.out.println("no");
+			if (key.getKeyCode() == keys[i] && time == 0 && boardObj.canMove(players.get(turn-1).getY(), players.get(turn-1).getX(),
+					players.get(turn-1).getY() + move[i/2][1], players.get(turn-1).getX() + move[i/2][0], i/2)) {
 				try {
 					movePlayer(i/2);
 				} catch (InterruptedException e) {
@@ -351,8 +358,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		}
 	}
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void keyReleased(KeyEvent e) {	
 	}
 }

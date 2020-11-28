@@ -107,8 +107,7 @@ public class Board {
 	}
 	//going to have to make sure that the direction is on sync with whats in the GUI
 	public boolean canMove(int y1, int x1, int y2, int x2, int direction) {
-		return board[y1][x1].getMove()[direction] && board[y2][x2].getMove()[(direction+2)%3];
-
+		return board[y1][x1].getMove()[direction] && board[y2][x2].getMove()[(direction+2)%4];
 	}
 	//send y and x coords and it'll return a 2d array of the tiles that can be visited from (y, x)
 	public boolean[][] getPath(int y, int x) {
