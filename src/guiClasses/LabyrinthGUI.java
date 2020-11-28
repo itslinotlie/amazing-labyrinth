@@ -59,16 +59,17 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		boardObj.getFreeTile().setBounds(150, 150, 130, 130);
 		boardObj.getFreeTile().setBackground(Color.RED);
 		boardObj.getFreeTile().setOpaque(true);
-//		System.out.println(boardObj.getFreeTile());
 
-		rotateLeft.setBounds(125, 300, 50, 50);
+		rotateLeft.setBounds(245, 300, 50, 50);
 		rotateLeft.setFocusable(false);
-		rotateLeft.setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player0.png").getImage().getScaledInstance(50, 50, 0)));
+		rotateLeft.setIcon(new ImageIcon(new ImageIcon("./res/gui-images/rotateLeft.png").getImage().getScaledInstance(50, 50, 0)));
+		rotateLeft.setBackground(Color.CYAN);
 		rotateLeft.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), false)); //lambdas op
 		
-		rotateRight.setBounds(245, 300, 50, 50);
+		rotateRight.setBounds(125, 300, 50, 50);
 		rotateRight.setFocusable(false);
-		rotateRight.setBackground(Color.GREEN);
+		rotateRight.setIcon(new ImageIcon(new ImageIcon("./res/gui-images/rotateRight.png").getImage().getScaledInstance(50, 50, 0)));
+		rotateRight.setBackground(Color.CYAN);
 		rotateRight.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), true));
 		
 		endTurnButton.setBounds(125, 570, 180, 40);
@@ -79,7 +80,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		endTurnButton.addActionListener(this);
 		
 		for (int i = 0; i < numCards; i++) {
-			JLabel card = new JLabel("Potato");
+			JLabel card = new JLabel();
 			card.setForeground(Color.WHITE);
 			card.setBounds(125 + (i%3) * 60, 360 + (int) (i/3 * 110), 50, 100);
 			cards.add(card);
@@ -149,7 +150,11 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			turn = 1;
 		
 		for (int i = 0; i < cards.size(); i++) {
-			cards.get(i).setIcon(new ImageIcon(new ImageIcon(players.get(turn-1).getHand()[i].getImage()).getImage().getScaledInstance(50, 80, 0)));
+			if (players.get(turn-1).getHand()[i].getItem().equals("None")) {
+				cards.get(i).setIcon(new ImageIcon(new ImageIcon("./res/card-images/completed.png").getImage().getScaledInstance(50, 80, 0)));
+			} else {
+				cards.get(i).setIcon(new ImageIcon(new ImageIcon(players.get(turn-1).getHand()[i].getImage()).getImage().getScaledInstance(50, 80, 0)));
+			}
 		}
 		
 		for (JButton shift : shiftTilesButtons)
@@ -223,8 +228,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		else n = 'r';
 
 		boardObj.shiftTile(p, n, magnitude);
-		System.out.printf("%d %d %d\n", parity, letter, magnitude);
-		System.out.println(players.get(turn-1).getX()+" | "+magnitude);
 		for (int i=0;i<players.size();i++) {
 		    if(letter==0 && players.get(i).getX()==magnitude) {
                 if(parity==0) movePlayer(2, i);
@@ -237,7 +240,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
         }
 		paintBoard();
 		repaint();
-		//debug();
 	}
 	private void paintBoard() {
 		for (int row=1;row<=7;row++) {
@@ -257,7 +259,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	
 	private void highlightBoard() {
 		
-		System.out.println(players.get(turn-1).getX() + "cum");
 		boolean[][] moveableTiles = boardObj.getPath(players.get(turn-1).getY(), players.get(turn-1).getX());
 		
 		for (int row = 1; row < 8; row++) {	
@@ -337,11 +338,14 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			
 		Timer timer = new Timer(20, this);
 		timer.start();
+		
+		checkTreasures();
+		
 		timer.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent event){
-				time ++;
-                int y = playerLabels.get(turny).getY()+move[direction][0];
+			public void actionPerformed(ActionEvent event){		
+				int y = playerLabels.get(turny).getY()+move[direction][0];
 				int x = playerLabels.get(turny).getX()+move[direction][1];
+				time ++;
 				playerLabels.get(turny).setBounds(x, y, playerLabels.get(turny).getWidth(), playerLabels.get(turny).getHeight());
 				repaint();
 
@@ -354,6 +358,43 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		});
 	}
 	
+	private void checkTreasures() {
+		
+		for (int i = 0; i < cards.size(); i++) {
+			if (players.get(turn-1).getHand()[i].getItem().equals(board[players.get(turn-1).getY()][players.get(turn-1).getX()].getName())) {
+				players.get(turn-1).getHand()[i].setItem("None");
+				cards.get(i).setIcon(new ImageIcon(new ImageIcon("./res/card-images/completed.png").getImage().getScaledInstance(50, 80, 0)));
+				checkWin(i);
+			} else {
+				System.out.println(board[players.get(turn-1).getY()][players.get(turn-1).getX()].getName());
+			}
+		}
+	}
+
+	private void checkWin(int player) {
+		
+		boolean win = true;
+		
+		for (Card card : players.get(turn-1).getHand()) {
+			if (!card.getItem().equals("None")) {
+				win = false;
+			}
+		}
+		
+		if (win) {
+			System.out.println("we got here doe");
+			players.remove(turn-1);
+			playerLabels.remove(turn-1);
+			
+			if (players.size() == 1) {
+				System.out.println("game over");
+			} 
+			
+			turn--;
+			nextTurn();
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == endTurnButton) {

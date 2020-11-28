@@ -58,7 +58,6 @@ public class Board {
 	//- c 2 --> shifts 2nd col up
 	//+ r 8 --> shifts 8th row to the right (didn't include error checking)
 	public void shiftTile(char parity, char letter, int position) {
-		System.out.println(parity+" "+letter+" "+position);
 		if(parity=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
 				if(letter=='r') swap(position, i, position, i+1);
@@ -88,8 +87,6 @@ public class Board {
 		this.parity = parity;
 		this.letter = letter;
 		this.position = position;
-		System.out.println("Free: "+y+" "+x+" = "+board[y][x].getName());
-		System.out.println("=============================");
 	}
 	public boolean checkShiftTile(char parity, char letter, int position) {
 		return !(this.parity!=parity && this.letter==letter && this.position==position);
@@ -107,7 +104,6 @@ public class Board {
 	}
 	//going to have to make sure that the direction is on sync with whats in the GUI
 	public boolean canMove(int y1, int x1, int y2, int x2, int direction) {
-	    System.out.printf("(%d, %d) -> (%d, %d) with %d\n", y1, x1, y2, x2, direction);
 		return board[y1][x1].getMove()[direction] && board[y2][x2].getMove()[(direction+2)%4];
 	}
 	//send y and x coords and it'll return a 2d array of the tiles that can be visited from (y, x)
