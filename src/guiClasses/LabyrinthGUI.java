@@ -270,11 +270,11 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	}
 	
 	private void movePlayer(int direction) {
-		int move[][] = {
+        int move[][] = {
             {-TILE_SIZE/10, 0},
+            {0, TILE_SIZE/10},
             {TILE_SIZE/10, 0},
             {0, -TILE_SIZE/10},
-            {0, TILE_SIZE/10}
         };
 
 		time = 0;
@@ -295,11 +295,11 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			
 		Timer timer = new Timer(20, this);
 		timer.start();
-		timer.addActionListener(new ActionListener(){  
+		timer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				time ++;
-				int x = playerLabels.get(turn-1).getX()+move[direction][0];
-				int y = playerLabels.get(turn-1).getY()+move[direction][1];
+                int y = playerLabels.get(turn-1).getY()+move[direction][0];
+				int x = playerLabels.get(turn-1).getX()+move[direction][1];
 				playerLabels.get(turn-1).setBounds(x, y, playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
 				repaint();
 
@@ -307,9 +307,9 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 					playerLabels.get(turn-1).setBounds((players.get(turn-1).getX()-1)*TILE_SIZE+70,(players.get(turn-1).getY()-1)*TILE_SIZE+65, 50, 50);
 					timer.stop();
 					time = 0;
-				}		
-			}  
-		});  
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -335,7 +335,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	
 	@Override
 	public void keyPressed(KeyEvent key) {
-//		int keys[] = {KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_S, KeyEvent.VK_DOWN};
         int keys[] = {
             KeyEvent.VK_W, KeyEvent.VK_UP,
             KeyEvent.VK_D, KeyEvent.VK_RIGHT,
