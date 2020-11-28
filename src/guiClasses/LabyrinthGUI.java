@@ -15,7 +15,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	private static final int SCREEN_WIDTH = 900, SCREEN_HEIGHT = 655, TILE_SIZE = 520/7;
 	
 	private int numCards;
-	private int turn = 0;
+	private int turn = 0, mxn = 7;
 
 	private Board boardObj = new Board();
 
@@ -59,7 +59,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		boardObj.getFreeTile().setBounds(150, 150, 130, 130);
 		boardObj.getFreeTile().setBackground(Color.RED);
 		boardObj.getFreeTile().setOpaque(true);
-		System.out.println(boardObj.getFreeTile());
+//		System.out.println(boardObj.getFreeTile());
 
 		rotateLeft.setBounds(125, 300, 50, 50);
 		rotateLeft.setFocusable(false);
@@ -111,26 +111,26 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			
 			if (playerColours[i] == Color.RED) {
 				playerLabels.get(i).setBounds(74, 65, 50, 50);
-				players.get(i).setX(0);
-				players.get(i).setY(0);
+				players.get(i).setX(1);
+				players.get(i).setY(1);
 				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player0.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 			else if (playerColours[i] == Color.BLUE) {
-				players.get(i).setX(6);
-				players.get(i).setY(6);
+				players.get(i).setX(7);
+				players.get(i).setY(7);
 				playerLabels.get(i).setBounds(514, 506, 50, 50);
 				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player1.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 				
 			else if (playerColours[i] == Color.YELLOW) {
-				players.get(i).setX(0);
-				players.get(i).setY(6);
+				players.get(i).setX(1);
+				players.get(i).setY(7);
 				playerLabels.get(i).setBounds(74, 506, 50, 50);
 				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player2.png").getImage().getScaledInstance(30, 30, 0)));
 			}
 			else if (playerColours[i] == Color.GREEN) {
-				players.get(i).setX(6);
-				players.get(i).setY(0);
+				players.get(i).setX(7);
+				players.get(i).setY(1);
 				playerLabels.get(i).setBounds(514, 65, 50, 50);
 				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player3.png").getImage().getScaledInstance(30, 30, 0)));
 
@@ -269,7 +269,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		repaint();
 	}
 	
-	private void movePlayer(int direction) throws InterruptedException {
+	private void movePlayer(int direction) {
 		
 		int move[][] = {
 				{-TILE_SIZE/10, 0},
@@ -306,11 +306,11 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 				int y = playerLabels.get(turn-1).getY()+move[direction][1];
 				playerLabels.get(turn-1).setBounds(x, y, playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
 				repaint();
-				System.out.println(playerLabels.get(turn-1).getBounds());
+//				System.out.println(playerLabels.get(turn-1).getBounds());
 				
 				if (time >= 10) {
 					playerLabels.get(turn-1).setBounds(players.get(turn-1).getX()*TILE_SIZE+70,players.get(turn-1).getY()*TILE_SIZE+65, 50, 50);
-					System.out.println(players.get(turn-1).getX());
+//					System.out.println(players.get(turn-1).getX());
 					timer.stop();
 					time = 0;
 				}		
@@ -341,20 +341,23 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	
 	@Override
 	public void keyPressed(KeyEvent key) {
-		
-		int[] keys = {KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_S, KeyEvent.VK_DOWN};
-		
+//		int keys[] = {KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_S, KeyEvent.VK_DOWN};
+        int keys[] = {
+            KeyEvent.VK_W, KeyEvent.VK_UP,
+            KeyEvent.VK_D, KeyEvent.VK_RIGHT,
+            KeyEvent.VK_S, KeyEvent.VK_DOWN,
+            KeyEvent.VK_A, KeyEvent.VK_LEFT
+        };
+        int move[][] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
+        System.out.println("Pressed: "+key.getKeyCode());
 		for (int i = 0; i < 8; i++) {
-			int move[][] = {{-1, 0},{1, 0},{0, -1},{0, 1}};
-			System.out.println("no");
-			if (key.getKeyCode() == keys[i] && time == 0 && boardObj.canMove(players.get(turn-1).getY(), players.get(turn-1).getX(),
-					players.get(turn-1).getY() + move[i/2][1], players.get(turn-1).getX() + move[i/2][0], i/2)) {
-				try {
-					movePlayer(i/2);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+		    int y1 = players.get(turn-1).getY(), y2 = y1 + move[i/2][0];
+		    int x1 = players.get(turn-1).getX(), x2 = x1 + move[i/2][1];
+		    if(y2<=0 || y2>mxn || x2<=0 || x2>mxn) continue;
+		    if(key.getKeyCode()==keys[i] && time==0 && boardObj.canMove(y1, x1, y2, x2, i/2)) {
+                movePlayer(i/2);
+            }
 		}
 	}
 	@Override
