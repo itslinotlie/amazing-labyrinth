@@ -52,7 +52,8 @@ public class Tile extends JLabel {
 			boolean temporary[] = new boolean[4];
 			for (int j=0;j<4;j++) {
 				if(move[j]) {
-					temporary[(j+1)%4] = true;
+					if(sum) temporary[(j+1)%4] = true;
+					else temporary[(j-1+4)%4] = true;
 				}
 			}
 			move = temporary.clone();
