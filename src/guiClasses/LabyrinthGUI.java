@@ -251,7 +251,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		for (int row = 1; row < 8; row++) {	
 			for (int col = 1; col < 8; col++) {	
 				if (moveableTiles[row][col]) {
-					board[row][col].setBorder(new LineBorder(players.get(turn-1).getColour(), 1));
+					board[row][col].setBorder(new LineBorder(players.get(turn-1).getColour(), 5));
 				} else {
 					board[row][col].setBorder(null);
 				}
