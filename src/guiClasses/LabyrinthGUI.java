@@ -215,7 +215,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		
 		playerPanel.remove(boardObj.getFreeTile());
 		gamePanel.add(boardObj.getFreeTile());
-		
+
 		char p, n;
 		if(parity==0) p = '+';
 		else p = '-';
@@ -223,6 +223,14 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		else n = 'r';
 
 		boardObj.shiftTile(p, n, magnitude);
+		System.out.printf("%d %d %d\n", parity, letter, magnitude);
+		System.out.println(players.get(turn-1).getX()+" | "+magnitude);
+		for (int i=0;i<players.size();i++) {
+		    if(letter==0 && players.get(i).getX()==magnitude) {
+                if(parity==0) movePlayer(2, i);
+                else movePlayer(0, i);
+            }
+        }
 		paintBoard();
 		repaint();
 		//debug();
@@ -287,7 +295,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		repaint();
 	}
 	
-	private void movePlayer(int direction) {
+	private void movePlayer(int direction, int turny) {
         int move[][] = {
             {-TILE_SIZE/10, 0},
             {0, TILE_SIZE/10},
@@ -298,16 +306,16 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		time = 0;
 		switch (direction) {
             case (0):
-                players.get(turn-1).setY(players.get(turn-1).getY()-1);
+                players.get(turny).setY(players.get(turny).getY()-1);
                 break;
             case (1):
-                players.get(turn-1).setX(players.get(turn-1).getX()+1);
+                players.get(turny).setX(players.get(turny).getX()+1);
                 break;
             case (2):
-                players.get(turn-1).setY(players.get(turn-1).getY()+1);
+                players.get(turny).setY(players.get(turny).getY()+1);
                 break;
             case (3):
-                players.get(turn-1).setX(players.get(turn-1).getX()-1);
+                players.get(turny).setX(players.get(turny).getX()-1);
                 break;
 		}
 			
@@ -316,13 +324,13 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		timer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				time ++;
-                int y = playerLabels.get(turn-1).getY()+move[direction][0];
-				int x = playerLabels.get(turn-1).getX()+move[direction][1];
-				playerLabels.get(turn-1).setBounds(x, y, playerLabels.get(turn-1).getWidth(), playerLabels.get(turn-1).getHeight());
+                int y = playerLabels.get(turny).getY()+move[direction][0];
+				int x = playerLabels.get(turny).getX()+move[direction][1];
+				playerLabels.get(turny).setBounds(x, y, playerLabels.get(turny).getWidth(), playerLabels.get(turny).getHeight());
 				repaint();
 
 				if (time >= 10) {
-					playerLabels.get(turn-1).setBounds((players.get(turn-1).getX()-1)*TILE_SIZE+70,(players.get(turn-1).getY()-1)*TILE_SIZE+65, 50, 50);
+					playerLabels.get(turny).setBounds((players.get(turny).getX()-1)*TILE_SIZE+70,(players.get(turny).getY()-1)*TILE_SIZE+65, 50, 50);
 					timer.stop();
 					time = 0;
 				}
@@ -368,7 +376,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		    int x1 = players.get(turn-1).getX(), x2 = x1 + move[i/2][1];
 		    if(y2<=0 || y2>mxn || x2<=0 || x2>mxn) continue;
 		    if(key.getKeyCode()==keys[i] && time==0 && boardObj.canMove(y1, x1, y2, x2, i/2)) {
-                movePlayer(i/2);
+                movePlayer(i/2, turn-1);
             }
 		}
 	}
