@@ -16,9 +16,7 @@ public class Board {
 		Tile tile;
 		Scanner in;
 		try {
-			
 			if (!LabyrinthGUI.continueGame) {
-				
 				in = new Scanner(new File("res/Tiles.txt"));
 				in.useDelimiter(",");
 
@@ -38,17 +36,14 @@ public class Board {
 				tile50 = tiles.pop();
 				Collections.shuffle(tiles);
 			} else {
-				
 				in = new Scanner(new File("saveGame.txt"));
 				in.useDelimiter(",");
 				
 				for (int i=0;i<50;i++) {
 					String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
-					
 					String name = in.next();
 					int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
 					tile = new Tile(letter, name, rot, x, y);
-					
 					if (i == 49) {
 						tile50 = new Tile(letter, name, rot, x, y);
 						tile50.rotate(rot*90, true, false);
@@ -59,9 +54,7 @@ public class Board {
 					else {
 						tiles.add(tile);
 					}
-					
 				}
-				
 			}
 
 			for (int i=1;i<=mxn;i++) {
@@ -89,7 +82,6 @@ public class Board {
 	//- c 2 --> shifts 2nd col up
 	//+ r 8 --> shifts 8th row to the right (didn't include error checking)
 	public void shiftTile(char parity, char letter, int position) {
-
 		if(parity=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
 				if(letter=='r') swap(position, i, position, i+1);
@@ -120,10 +112,6 @@ public class Board {
 		this.letter = letter;
 		this.position = position;
 	}
-	public boolean checkShiftTile(char parity, char letter, int position) {
-		return !(this.parity!=parity && this.letter==letter && this.position==position);
-	}
-	
 	public void swap(int y1, int x1) {
 		board[y1][x1] = tile50;
 		board[y1][x1].setDown(y1);
@@ -135,11 +123,9 @@ public class Board {
 		board[y1][x1].setLeft(x1);
 
 	}
-	//going to have to make sure that the direction is on sync with whats in the GUI
 	public boolean canMove(int y1, int x1, int y2, int x2, int direction) {
 		return board[y1][x1].getMove()[direction] && board[y2][x2].getMove()[(direction+2)%4];
 	}
-	//send y and x coords and it'll return a 2d array of the tiles that can be visited from (y, x)
 	public boolean[][] getPath(int y, int x) {
 		for (int i=0;i<=mxn+1;i++) {
 			Arrays.fill(vis[i], false);

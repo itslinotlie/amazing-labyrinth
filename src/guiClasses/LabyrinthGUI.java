@@ -81,6 +81,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		rotateRight.setFocusable(false);
 		rotateRight.setIcon(new ImageIcon(new ImageIcon("./res/gui-images/rotateRight.png").getImage().getScaledInstance(50, 50, 0)));
 		rotateRight.setBackground(Color.CYAN);
+        rotateRight.addActionListener(e -> rotate(boardObj.getY(), boardObj.getX(), true)); //lambdas op
 		
 		endTurnButton.setBounds(125, 570, 180, 40);
 		endTurnButton.setForeground(Color.RED);
