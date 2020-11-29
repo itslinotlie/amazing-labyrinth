@@ -16,7 +16,7 @@ public class Board {
 	private Tile tile50, board[][] = new Tile[maxN+2][maxN+2];
 
 	//creates the board with randomly orientated tiles
-	public Board(boolean continueGame) {
+	public Board() {
         Stack<Tile> tiles = new Stack<Tile>();
         Tile tile;
         Scanner in;
