@@ -89,6 +89,7 @@ public class Board {
 	//- c 2 --> shifts 2nd col up
 	//+ r 8 --> shifts 8th row to the right (didn't include error checking)
 	public void shiftTile(char parity, char letter, int position) {
+
 		if(parity=='-') { //push to the left or up
 			for (int i=0;i<mxn;i++) {
 				if(letter=='r') swap(position, i, position, i+1);
@@ -122,6 +123,7 @@ public class Board {
 	public boolean checkShiftTile(char parity, char letter, int position) {
 		return !(this.parity!=parity && this.letter==letter && this.position==position);
 	}
+	
 	public void swap(int y1, int x1) {
 		board[y1][x1] = tile50;
 		board[y1][x1].setDown(y1);
