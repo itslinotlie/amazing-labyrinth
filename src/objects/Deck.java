@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class Deck {
-	private static Stack<Card> deck = new Stack<Card>();
+	private Stack<Card> deck = new Stack<Card>();
 	public Deck() {
 		Scanner input;
 		try {
