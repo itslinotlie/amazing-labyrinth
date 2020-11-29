@@ -22,7 +22,7 @@ public class Board {
 		Scanner in;
 		try {
 		    if(LabyrinthGUI.continueGame) {
-		        in = new Scanner(new File("res/saveGame.txt"));
+		        in = new Scanner(new File("saveGame.txt"));
             } else {
                 in = new Scanner(new File("res/Tiles.txt"));
             }
