@@ -6,6 +6,10 @@ import javax.swing.*;
 
 import objects.Player;
 
+/**
+ * GUI for the end screen
+ * Places the top 3 players on a podium
+ */
 public class EndScreenGUI extends JFrame {
     private static final int SCREEN_WIDTH = 900, SCREEN_HEIGHT = 655;
     private JLabel gameSetupBackground = new JLabel();

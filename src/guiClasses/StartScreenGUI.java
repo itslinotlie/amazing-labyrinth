@@ -1,4 +1,5 @@
 package guiClasses;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -6,8 +7,11 @@ import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.text.*;
 
+/**
+ * GUI for the start screen
+ * Allows players to create a new game or continue from the latest game
+ */
 @SuppressWarnings("serial")
 public class StartScreenGUI extends JFrame implements ActionListener{
 	

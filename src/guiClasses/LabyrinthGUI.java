@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.*;
 
-/* 
+/**
  * GUI for the Labyrinth game
  * Uses the Keyboard and mouse to interact with the game
  */
