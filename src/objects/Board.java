@@ -4,33 +4,65 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import guiClasses.LabyrinthGUI;
+
 public class Board {
 	private int x, y, mxn = 7, position, m[][] = {{-1, 0},{0, 1},{1, 0},{0, -1}};
 	private boolean vis[][] = new boolean[mxn+2][mxn+2];
 	private char parity, letter;
 	private Tile tile50, board[][] = new Tile[mxn+2][mxn+2];
-	public Board() {
+	public Board(boolean continueGame) {
 		Stack<Tile> tiles = new Stack<Tile>();
 		Tile tile;
 		Scanner in;
 		try {
-			in = new Scanner(new File("res/Tiles.txt"));
-			in.useDelimiter(",");
+			
+			if (!LabyrinthGUI.continueGame) {
+				
+				in = new Scanner(new File("res/Tiles.txt"));
+				in.useDelimiter(",");
 
-			for (int i=0;i<50;i++) {
-				String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
-				String name = in.next();
-				int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
-				tile = new Tile(letter, name, rot, x, y);
-				if(i<16) {
-					tile.rotate(rot*90, true, false);
-					board[y][x] = tile;
+				for (int i=0;i<50;i++) {
+					String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
+					String name = in.next();
+					int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
+					tile = new Tile(letter, name, rot, x, y);
+					if (rot != -1) {
+						tile.rotate(rot*90, true, false);
+						board[y][x] = tile;
+					}
+					else {
+						tiles.add(tile);
+					}
 				}
-				else {
-					tiles.add(tile);
+				tile50 = tiles.pop();
+				Collections.shuffle(tiles);
+			} else {
+				
+				in = new Scanner(new File("saveGame.txt"));
+				in.useDelimiter(",");
+				
+				for (int i=0;i<50;i++) {
+					String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
+					
+					String name = in.next();
+					int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
+					tile = new Tile(letter, name, rot, x, y);
+					
+					if (i == 49) {
+						tile50 = new Tile(letter, name, rot, x, y);
+						tile50.rotate(rot*90, true, false);
+					} else if (rot != -1) {
+						tile.rotate(rot*90, true, false);
+						board[y][x] = tile;
+					}
+					else {
+						tiles.add(tile);
+					}
+					
 				}
+				
 			}
-			Collections.shuffle(tiles);
 
 			for (int i=1;i<=mxn;i++) {
 				for (int j=1;j<=mxn;j++) {
@@ -42,7 +74,6 @@ public class Board {
 					}
 				}
 			}
-			tile50 = tiles.pop();
 			y = x = mxn+1;
 			tile50.setDown(y); tile50.setLeft(x);
 			board[y][x] = tile50;

@@ -4,6 +4,11 @@ import objects.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import javax.swing.*;
@@ -16,10 +21,12 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	
 	private int numCards;
 	private int turn = 0, mxn = 7;
+	
+	public static boolean continueGame;
 
-	private Board boardObj = new Board();
+	private Board boardObj;
 
-	private Tile[][] board = boardObj.getBoard();
+	private Tile[][] board;
 	
 	private JLayeredPane mainPanel = new JLayeredPane();
 	
@@ -39,6 +46,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	private ArrayList<JLabel> cards = new ArrayList<JLabel>();
 	private ArrayList<JLabel> playerLabels = new ArrayList<JLabel>();
 
+	private ArrayList<Player> winners = new ArrayList<Player>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	
 	private int time = 0;
@@ -46,11 +54,14 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	public LabyrinthGUI(int cards, Color[] playerColours, boolean continueGame) {
 		
 		this.playerColours = playerColours;
-		numCards = cards;
+		LabyrinthGUI.continueGame = continueGame;
+		boardObj = new Board(continueGame);
 		
+		if (!continueGame) numCards = cards;
+		board = boardObj.getBoard();
+
 		createBoardPanels();
-		createPlayerPanel();
-		
+		createPlayerPanel();	
 		createFrame();
 	}
 
@@ -106,44 +117,107 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	
 	private void addPlayers() {
 		
-		for (int i = 0; i < playerColours.length; i++) {
-			players.add(new Player(numCards, playerColours[i], true, 0, 0));
-			playerLabels.add(new JLabel());
+		if (LabyrinthGUI.continueGame) {
 			
-			if (playerColours[i] == Color.RED) {
-				playerLabels.get(i).setBounds(74, 65, 50, 50);
-				players.get(i).setX(1);
-				players.get(i).setY(1);
-				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player0.png").getImage().getScaledInstance(30, 30, 0)));
-			}
-			else if (playerColours[i] == Color.BLUE) {
-				players.get(i).setX(7);
-				players.get(i).setY(7);
-				playerLabels.get(i).setBounds(514, 506, 50, 50);
-				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player1.png").getImage().getScaledInstance(30, 30, 0)));
-			}
+			Scanner input;
+			try {
 				
-			else if (playerColours[i] == Color.YELLOW) {
-				players.get(i).setX(7);
-				players.get(i).setY(1);
-				playerLabels.get(i).setBounds(514, 65, 50, 50);
-				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player2.png").getImage().getScaledInstance(30, 30, 0)));
+				input = new Scanner(new File("saveGame.txt"));
+				input.useDelimiter(",");
+				for (int i = 0; i < 50; i++) input.nextLine();
+				turn = input.nextInt()-1;
+				input.nextLine();
+				while (input.hasNext()) {
+					
+					Color colour = new Color(input.nextInt(), input.nextInt(), input.nextInt());
+					
+					Card[] cards = new Card[input.nextInt()];
+					
+					numCards = cards.length;
+					
+					for (int i = 0; i < cards.length; i++) {
+						cards[i] = new Card(input.next().replaceAll("\n", "").replaceAll("\r", ""));
+					}
+					players.add(new Player(0, colour, input.nextBoolean(), input.nextInt(), input.nextInt()));
+					players.get(players.size()-1).setHand(cards);
+					input.nextLine();
+				}
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else if (playerColours[i] == Color.GREEN) {
-				players.get(i).setX(1);
-				players.get(i).setY(7);
-				playerLabels.get(i).setBounds(75, 506, 50, 50);
-				playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player3.png").getImage().getScaledInstance(30, 30, 0)));
+			
+			for (int i = 0; i < players.size(); i++) {
+				
+				playerLabels.add(new JLabel());
+				
+				Color colour = players.get(i).getColour();
+				
+				if (colour.getRed() == 255 && colour.getBlue() == 0 && colour.getGreen() == 0) {
+					playerLabels.get(i).setBounds((players.get(i).getX()-1)*TILE_SIZE+70,(players.get(i).getY()-1)*TILE_SIZE+65, 50, 50);
+					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player0.png").getImage().getScaledInstance(30, 30, 0)));
+				}
+				else if (colour.getRed() == 0 && colour.getBlue() == 255 && colour.getGreen() == 0) {
+					playerLabels.get(i).setBounds((players.get(i).getX()-1)*TILE_SIZE+70,(players.get(i).getY()-1)*TILE_SIZE+65, 50, 50);
+					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player1.png").getImage().getScaledInstance(30, 30, 0)));
+				}
+					
+				else if (colour.getRed() == 0 && colour.getBlue() == 255 && colour.getGreen() == 255) {
+					playerLabels.get(i).setBounds((players.get(i).getX()-1)*TILE_SIZE+70,(players.get(i).getY()-1)*TILE_SIZE+65, 50, 50);
+					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player2.png").getImage().getScaledInstance(30, 30, 0)));
+				}
+				else if (colour.getRed() == 0 && colour.getBlue() == 0 && colour.getGreen() == 255) {
+					playerLabels.get(i).setBounds((players.get(i).getX()-1)*TILE_SIZE+70,(players.get(i).getY()-1)*TILE_SIZE+65, 50, 50);
+					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player3.png").getImage().getScaledInstance(30, 30, 0)));
+				}
+				
 
+				gamePanel.add(playerLabels.get(i));
 			}
-
-			gamePanel.add(playerLabels.get(i));
+			
+		} else {
+		
+			for (int i = 0; i < playerColours.length; i++) {
+				
+				
+				players.add(new Player(numCards, playerColours[i], true, 0, 0));
+				playerLabels.add(new JLabel());
+				
+				if (playerColours[i] == Color.RED) {
+					playerLabels.get(i).setBounds(74, 65, 50, 50);
+					players.get(i).setX(1);
+					players.get(i).setY(1);
+					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player0.png").getImage().getScaledInstance(30, 30, 0)));
+				}
+				else if (playerColours[i] == Color.BLUE) {
+					players.get(i).setX(7);
+					players.get(i).setY(7);
+					playerLabels.get(i).setBounds(514, 506, 50, 50);
+					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player1.png").getImage().getScaledInstance(30, 30, 0)));
+				}
+					
+				else if (playerColours[i] == Color.YELLOW) {
+					players.get(i).setX(7);
+					players.get(i).setY(1);
+					playerLabels.get(i).setBounds(514, 65, 50, 50);
+					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player2.png").getImage().getScaledInstance(30, 30, 0)));
+				}
+				else if (playerColours[i] == Color.GREEN) {
+					players.get(i).setX(1);
+					players.get(i).setY(7);
+					playerLabels.get(i).setBounds(75, 506, 50, 50);
+					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player3.png").getImage().getScaledInstance(30, 30, 0)));
+				}
+	
+				gamePanel.add(playerLabels.get(i));
+			}
 		}
 		
 	}
 	
 	private void nextTurn() {
-		
+
 		turn ++;
 		
 		if (turn > players.size()) 
@@ -166,6 +240,44 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		
 		playerTurnLabel.setForeground(players.get(turn-1).getColour());
 		playerTurnLabel.setText("Player " + turn);
+		
+		saveGame();
+	}
+
+	private void saveGame() {
+		try {
+			PrintWriter saveWriter = new PrintWriter(new FileWriter("saveGame.txt", false));
+			String tiles = "";
+			for (int row = 1; row < 8; row++) {
+				for (int col = 1; col < 8; col++) {
+					tiles += board[row][col].getType() + "," + board[row][col].getName() + "," + Integer.toString((int)(board[row][col].getAngle()/90)) + 
+							"," + board[row][col].getDown() + ","+ board[row][col].getLeft() + ",\n";
+				}
+				
+			}
+			tiles += boardObj.getFreeTile().getType() + "," + boardObj.getFreeTile().getName() + "," +
+			Integer.toString((int)(boardObj.getFreeTile().getAngle()/90)) + "," + boardObj.getFreeTile().getDown() + "," + boardObj.getFreeTile().getLeft() + ",\n";
+			
+			tiles += turn + ",\n";
+			for (int i = 0; i < players.size(); i++) {
+				
+				tiles += players.get(i).getColour().getRed() + "," + players.get(i).getColour().getGreen() + "," + players.get(i).getColour().getBlue() + ","; 
+				tiles += numCards + ",";
+				for (Card card : players.get(i).getHand()) {
+					tiles += card.getItem() + ",";
+				}
+				
+				tiles += "false," + players.get(i).getX() + "," + players.get(i).getY();
+				tiles += ",\n";
+			
+			}
+			saveWriter.write(tiles);
+			saveWriter.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void createBoardPanels() {
@@ -366,7 +478,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 				cards.get(i).setIcon(new ImageIcon(new ImageIcon("./res/card-images/completed.png").getImage().getScaledInstance(50, 80, 0)));
 				checkWin(i);
 			} else {
-				System.out.println(board[players.get(turn-1).getY()][players.get(turn-1).getX()].getName());
 			}
 		}
 	}
@@ -382,7 +493,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		}
 		
 		if (win) {
-			System.out.println("we got here doe");
+			winners.add(players.get(turn-1));
 			players.remove(turn-1);
 			playerLabels.remove(turn-1);
 			

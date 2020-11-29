@@ -1,11 +1,7 @@
 package guiClasses;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
@@ -18,6 +14,7 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 	private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 	
 	private static final Color LIGHT_GREY = new Color(35,35,35);
+	
 	private final Color[] PLAYER_COLOURS = {Color.WHITE, Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
 	private final Font labelFont = new Font("Times New Roman", Font.BOLD, 26);
 	
@@ -229,6 +226,7 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 		playerColour.setBounds(160, 0, 40, 40);
 		playerColour.setBackground(Color.WHITE);
 		playerColour.setBorder(null);
+		//playerColour.setFocusable(false);
 		playerColour.addActionListener(this);
 		
 		JPanel playerPanel = new JPanel();
@@ -321,11 +319,45 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 	public void actionPerformed(ActionEvent event) {
 		
 		if (event.getSource() == playGameButton) {
+			
+			int option = JOptionPane.showConfirmDialog(playGameButton, "Creating a new game will delete all previous data."
+					+ "\nDo you wish to continue", "warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+			if (option == JOptionPane.YES_OPTION) {
+				
+			try {
+				PrintWriter saveWriter = new PrintWriter(new FileWriter("saveGame.txt", false));
+				saveWriter.write(""); // default new game values for the player
+				saveWriter.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				}
+			
 			startGamePanel.setVisible(false);
 			customizeGamePanel.setVisible(true);
 			mainPanel.setLayer(customizeGamePanel, new Integer(2));
+			} 
+				
 		} else if (event.getSource() == continueGameButton) {
-			System.out.println("continue");
+
+			try {
+				Scanner input = new Scanner(new File("saveGame.txt"));
+				
+				if (input.hasNext()) {
+					dispose();
+					new LabyrinthGUI(0, null, true);
+				} else {
+					JOptionPane.showConfirmDialog(playGameButton, "You do not have a game currently saved",
+							"No Game Found", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+				}
+				
+				input.close();
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+				
 		} else if (event.getSource() == quitGameButton){
 			System.exit(0);
 		} else if (event.getSource() == goBackButton) {
@@ -353,8 +385,6 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 				else
 					playerColours[i] = playersArray.get(i).getComponent(1).getBackground();
 			}
-		
-			
 			dispose();
 			new LabyrinthGUI(Integer.parseInt(numCardsText.getText()), playerColours, false);
 			
@@ -363,8 +393,9 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 		for (JPanel player : playersArray) {
 			if (event.getSource() == player.getComponent(1)) {
 				changePlayerColour(player);
-			}
+			} 
 		}
+		
 		repaint();
 	}
 
