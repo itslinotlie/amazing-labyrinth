@@ -28,10 +28,12 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 	private JLayeredPane customizeGamePanel = new JLayeredPane();
 	
 	private JPanel startGamePanel = new JPanel();
+	private JPanel rulesPanel = new JPanel();
 	
 	private JButton playGameButton = new JButton("Play");
 	private JButton continueGameButton = new JButton("Continue");
 	private JButton quitGameButton = new JButton("Quit");
+	private JButton rulesBackButton = new JButton("Go Back");
 	
 	private JButton startGameButton = new JButton("Start Game");
 	private JButton goBackButton = new JButton("Go Back");
@@ -43,6 +45,7 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 	
 	private JLabel gameStartupTitle = new JLabel();
 	private JLabel gameSetupTitle = new JLabel();
+	private JLabel rulesLabel = new JLabel();
 	private JLabel gameSetupBackground = new JLabel(SETUP_BACKGROUND);
 	private JLabel numPlayersLabel = new JLabel("Players");
 	private JLabel numCardsLabel = new JLabel("Cards (Per Player)");
@@ -53,7 +56,6 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 	public StartScreenGUI() {
 		createPanels();
 		createFrame();
-		new EndScreenGUI();
 	}
 
 	private void createPanels() {
@@ -64,6 +66,7 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 		mainPanel.setLayout(null);
 		mainPanel.add(startGamePanel, new Integer(1)); 
 		mainPanel.add(customizeGamePanel, new Integer(0));
+		mainPanel.add(rulesPanel, new Integer(0));
 		mainPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		mainPanel.setVisible(true);
 	}
@@ -106,6 +109,24 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 	}
 
 	private void createGameOptionsPanel() {
+		
+		//rulesLabel.setIcon(null);
+		rulesLabel.setBackground(Color.BLACK);
+		rulesLabel.setOpaque(true);
+		rulesLabel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		
+		rulesBackButton.setBounds(SCREEN_WIDTH/2-100, 420, 200, 40);
+		rulesBackButton.setBackground(Color.BLACK);
+		rulesBackButton.setForeground(Color.WHITE);
+		rulesBackButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		rulesBackButton.setFocusPainted(false);
+		rulesBackButton.setFont(labelFont);
+		rulesBackButton.addActionListener(this);
+		
+		rulesPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		rulesPanel.setLayout(null);
+		rulesPanel.add(rulesBackButton);
+		rulesPanel.add(rulesLabel);
 		
 		gameSetupTitle.setIcon(LABYRINTH_TEXT2);
 		gameSetupTitle.setBounds(0, 0, LABYRINTH_TEXT.getIconWidth(), LABYRINTH_TEXT.getIconHeight());
@@ -360,22 +381,50 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 			}
 				
 		} else if (event.getSource() == quitGameButton){
+			
 			System.exit(0);
+			
 		} else if (event.getSource() == goBackButton) {
+			
 			startGamePanel.setVisible(true);
 			customizeGamePanel.setVisible(false);
 			mainPanel.setLayer(customizeGamePanel, 0);
+			
 		} else if (event.getSource() == addPlayerButton) {
+			
 			addPlayerButton.setBounds(addPlayerButton.getX(), addPlayerButton.getY() + 50, addPlayerButton.getWidth(), addPlayerButton.getHeight());
 			addPlayer();
+			
 		} else if (event.getSource() == removePlayerButton) {
+			
 			removePlayer();
+			
 		} else if (event.getSource() == addCardButton) {
+			
 			if (!numCardsText.getText().equals("6")) 
 			numCardsText.setText(Integer.toString((Integer.parseInt(numCardsText.getText())+1)));	
+			
 		} else if (event.getSource() == removeCardButton) {
+			
 			if (!numCardsText.getText().equals("2")) 
 			numCardsText.setText(Integer.toString((Integer.parseInt(numCardsText.getText())-1)));	
+			
+		} else if (event.getSource() == rulesButton){
+			
+			mainPanel.setLayer(customizeGamePanel, new Integer(1));
+			mainPanel.setLayer(rulesPanel, new Integer(2));
+			
+			customizeGamePanel.setVisible(false);
+			rulesPanel.setVisible(true);
+			
+		} else if (event.getSource() == rulesBackButton) {
+			
+			mainPanel.setLayer(rulesPanel, new Integer(1));
+			mainPanel.setLayer(customizeGamePanel, new Integer(2));
+			
+			customizeGamePanel.setVisible(true);
+			rulesPanel.setVisible(false);
+			
 		} else if (event.getSource() == startGameButton) {
 			
 			Color[] playerColours = new Color[playersArray.size()];

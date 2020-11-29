@@ -147,12 +147,14 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			System.out.println(players.size());
 			for (int i = 0; i < players.size(); i++) {
 				
 				playerLabels.add(new JLabel());
 				
 				Color colour = players.get(i).getColour();
+				
+				System.out.println(colour.getRed() + " " + colour.getBlue() + " " + colour.getGreen());
 				
 				if (colour.getRed() == 255 && colour.getBlue() == 0 && colour.getGreen() == 0) {
 					playerLabels.get(i).setBounds((players.get(i).getX()-1)*TILE_SIZE+70,(players.get(i).getY()-1)*TILE_SIZE+65, 50, 50);
@@ -163,7 +165,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player1.png").getImage().getScaledInstance(30, 30, 0)));
 				}
 					
-				else if (colour.getRed() == 0 && colour.getBlue() == 255 && colour.getGreen() == 255) {
+				else if (colour.getRed() == 255 && colour.getBlue() == 0 && colour.getGreen() == 255) {
 					playerLabels.get(i).setBounds((players.get(i).getX()-1)*TILE_SIZE+70,(players.get(i).getY()-1)*TILE_SIZE+65, 50, 50);
 					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player2.png").getImage().getScaledInstance(30, 30, 0)));
 				}
@@ -172,7 +174,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 					playerLabels.get(i).setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player3.png").getImage().getScaledInstance(30, 30, 0)));
 				}
 				
-
+				
 				gamePanel.add(playerLabels.get(i));
 			}
 			
@@ -495,14 +497,27 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		if (win) {
 			winners.add(players.get(turn-1));
 			players.remove(turn-1);
+			gamePanel.remove(playerLabels.get(turn-1));
 			playerLabels.remove(turn-1);
+			repaint();
 			
 			if (players.size() == 1) {
-				System.out.println("game over");
-			} 
-			
-			turn--;
-			nextTurn();
+				System.out.println("this thing");
+				try {
+					PrintWriter clearSave = new PrintWriter(new FileWriter("saveGame.txt", false));
+					clearSave.write("");
+					clearSave.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				dispose();
+				new EndScreenGUI(winners);
+				Thread.currentThread().stop();
+			} else {
+				turn--;
+				nextTurn();
+			}
 		}
 	}
 

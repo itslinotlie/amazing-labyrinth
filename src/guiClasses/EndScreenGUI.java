@@ -1,7 +1,9 @@
 package guiClasses;
 
+import java.util.*;
 import javax.swing.*;
-import java.awt.*;
+
+import objects.Player;
 
 public class EndScreenGUI extends JFrame {
     private static final int SCREEN_WIDTH = 900, SCREEN_HEIGHT = 655;
@@ -11,7 +13,7 @@ public class EndScreenGUI extends JFrame {
 
     private JPanel bg = new JPanel();
 
-    public EndScreenGUI() {
+    public EndScreenGUI(ArrayList<Player> winners) {
         createPanel();
         createFrame();
     }
