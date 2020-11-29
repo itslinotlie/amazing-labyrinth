@@ -32,11 +32,7 @@ public class EndScreenGUI extends JFrame {
             player[i] = new JLabel();
             player[i].setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player"+colorToInt(winners.get(i).getColour())+".png").getImage().getScaledInstance(200, 200, 0)));
         }
-
-//        for (int i=0;i<3;i++) {
-//            player[i] = new JLabel();
-//            player[i].setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player"+i+".png").getImage().getScaledInstance(200, 200, 0)));
-//        }
+        
         for (int i=0;i<Math.min(3, winners.size());i++) {
             if(i==0) player[0].setBounds(360, 50, 500, 500);
             else if(i==1) player[1].setBounds(160, 130, 500, 500);
@@ -71,10 +67,9 @@ public class EndScreenGUI extends JFrame {
         repaint();
     }
     private int colorToInt(Color color) {
-        if(color==Color.RED) return 0;
-        else if(color==Color.BLUE) return 1;
-        else if(color==Color.YELLOW) return 2;
-//        if(color==Color.GREEN) return 3;
+        if(color.getRed() == 255 && color.getBlue() == 0 && color.getGreen() == 0) return 0;
+        else if(color.getRed() == 0 && color.getBlue() == 255 && color.getGreen() == 0) return 1;
+        else if(color.getRed() == 255 && color.getBlue() == 0 && color.getGreen() == 255) return 2;
         else return 3;
     }
 }

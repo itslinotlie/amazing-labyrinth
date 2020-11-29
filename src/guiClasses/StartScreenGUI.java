@@ -110,20 +110,21 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 
 	private void createGameOptionsPanel() {
 		
-		//rulesLabel.setIcon(null);
+		rulesLabel.setBounds(30, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		rulesLabel.setIcon(new ImageIcon("./res/gui-images/rules.png"));
 		rulesLabel.setBackground(Color.BLACK);
 		rulesLabel.setOpaque(true);
-		rulesLabel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		
-		rulesBackButton.setBounds(SCREEN_WIDTH/2-100, 420, 200, 40);
+		rulesBackButton.setBounds(SCREEN_WIDTH/2-75, 360, 150, 40);
 		rulesBackButton.setBackground(Color.BLACK);
-		rulesBackButton.setForeground(Color.WHITE);
+		rulesBackButton.setForeground(Color.GREEN);
 		rulesBackButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		rulesBackButton.setFocusPainted(false);
 		rulesBackButton.setFont(labelFont);
 		rulesBackButton.addActionListener(this);
 		
-		rulesPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		rulesPanel.setBounds(0, -20, SCREEN_WIDTH, SCREEN_HEIGHT);
+		rulesPanel.setBackground(Color.BLACK);
 		rulesPanel.setLayout(null);
 		rulesPanel.add(rulesBackButton);
 		rulesPanel.add(rulesLabel);

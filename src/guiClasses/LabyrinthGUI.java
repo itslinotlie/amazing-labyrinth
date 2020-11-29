@@ -175,15 +175,21 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 					
 					Color colour = new Color(input.nextInt(), input.nextInt(), input.nextInt());
 					
-					Card[] cards = new Card[input.nextInt()];
+					int cardCount = input.nextInt();
 					
-					numCards = cards.length;
-					
-					for (int i = 0; i < cards.length; i++) {
-						cards[i] = new Card(input.next().replaceAll("\n", "").replaceAll("\r", ""));
+					if (cardCount != 0){
+						Card[] cards = new Card[cardCount];
+						
+						numCards = cards.length;
+						
+						for (int i = 0; i < cards.length; i++) {
+							cards[i] = new Card(input.next().replaceAll("\n", "").replaceAll("\r", ""));
+						}
+						players.add(new Player(0, colour, input.nextBoolean(), input.nextInt(), input.nextInt()));
+						players.get(players.size()-1).setHand(cards);
+					} else {
+						winners.add(new Player(numCards, colour, false, 8, 8));
 					}
-					players.add(new Player(0, colour, input.nextBoolean(), input.nextInt(), input.nextInt()));
-					players.get(players.size()-1).setHand(cards);
 					input.nextLine();
 				}
 				
@@ -333,6 +339,12 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 				tiles += "false," + players.get(i).getX() + "," + players.get(i).getY();
 				tiles += ",\n";
 			
+			}
+			
+			//add each player that has won the game to the save game file
+			for (int i = 0; i < winners.size(); i++) {
+				tiles += winners.get(i).getColour().getRed() + "," + winners.get(i).getColour().getGreen() + "," + winners.get(i).getColour().getBlue() + ",";
+				tiles += "0,\n";
 			}
 			
 			//write the information on the file 
@@ -559,13 +571,11 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		Timer timer = new Timer(20, this);
 		timer.start();
 		
-		//check if the player encounters a treasure in their hand
-		checkTreasures();
-		
 		//smooth transitions to move the player 
 		timer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				time ++;
+				
                 int y = playerLabels.get(turny).getY()+move[direction][0];
 				int x = playerLabels.get(turny).getX()+move[direction][1];
 				playerLabels.get(turny).setBounds(x, y, playerLabels.get(turny).getWidth(), playerLabels.get(turny).getHeight());
@@ -575,6 +585,9 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 					playerLabels.get(turny).setBounds((players.get(turny).getX()-1)*TILE_SIZE+70,(players.get(turny).getY()-1)*TILE_SIZE+65, 50, 50);
 					timer.stop();
 					time = 0;
+					
+					//check if the player encounters a treasure in their hand
+					checkTreasures();
 				}
 			}
 		});
@@ -639,7 +652,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 				//stop all key listeners in this class
 				Thread.currentThread().stop();
 			} else {
-				
 				//if the game is not over, continue playing
 				turn--;
 				nextTurn();
