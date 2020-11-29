@@ -47,20 +47,20 @@ public class Board {
 		    if(!LabyrinthGUI.continueGame) {
 		        tile50 = tiles.pop();
 		        Collections.shuffle(tiles);
-                for (int i=1;i<=maxN;i++) {
-                    for (int j=1;j<=maxN;j++) {
-                        if(board[i][j]==null) {
-                            int rot = (int) (Math.random() * 4 + 1);
-                            tile = tiles.pop();
-                            tile.setLeft(j); tile.setDown(i); tile.rotate(rot*90, true, true);
-                            board[i][j] = tile;
-                        }
+            }
+            for (int i=1;i<=maxN;i++) {
+                for (int j=1;j<=maxN;j++) {
+                    if(board[i][j]==null) {
+                        int rot = (int) (Math.random() * 4 + 1);
+                        tile = tiles.pop();
+                        tile.setLeft(j); tile.setDown(i); tile.rotate(rot*90, true, true);
+                        board[i][j] = tile;
                     }
                 }
-                y = x = maxN+1;
-                tile50.setDown(y); tile50.setLeft(x);
-                board[y][x] = tile50;
             }
+            y = x = maxN+1;
+            tile50.setDown(y); tile50.setLeft(x);
+            board[y][x] = tile50;
         } catch(FileNotFoundException e)  {
             System.out.println("ERROR. File not found.");
         }
