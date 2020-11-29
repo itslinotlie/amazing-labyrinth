@@ -53,6 +53,7 @@ public class StartScreenGUI extends JFrame implements ActionListener, KeyListene
 	public StartScreenGUI() {
 		createPanels();
 		createFrame();
+		new EndScreenGUI();
 	}
 
 	private void createPanels() {
