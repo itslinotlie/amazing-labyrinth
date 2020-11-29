@@ -6,10 +6,13 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.Stack;
 
+/**
+ * Models the deck that will hold all the treasure cards
+ */
 public class Deck {
-
 	private Stack<Card> deck = new Stack<Card>();
 
+	//initializes the deck by reading cards from a txt file
 	public Deck() {
 		Scanner input;
 		try {
@@ -22,12 +25,15 @@ public class Deck {
 		}
 		Collections.shuffle(deck);
 	}
+
 	public Card getCard() {
 		return deck.pop();
 	}
+
 	public Stack<Card> getDeck() {
 		return deck;
 	}
+
 	@Override
 	public String toString() {
 		return "Deck [deck=" + deck + "]";
