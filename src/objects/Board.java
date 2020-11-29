@@ -17,37 +17,58 @@ public class Board {
 
 	//creates the board with randomly orientated tiles
 	public Board(boolean continueGame) {
-		Stack<Tile> tiles = new Stack<Tile>();
-		Tile tile;
-		Scanner in;
-		try {
-		    if(LabyrinthGUI.continueGame) {
-		        in = new Scanner(new File("saveGame.txt"));
-            } else {
+        Stack<Tile> tiles = new Stack<Tile>();
+        Tile tile;
+        Scanner in;
+        try {
+
+            if (!LabyrinthGUI.continueGame) {
+
                 in = new Scanner(new File("res/Tiles.txt"));
-            }
-		    in.useDelimiter(",");
+                in.useDelimiter(",");
 
-		    for (int i=0;i<50;i++) {
-                String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
-                String name = in.next();
-                int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
-                tile = new Tile(letter, name, rot, x, y);
-                if (i==49 && LabyrinthGUI.continueGame) {
-                    tile50 = new Tile(letter, name, rot, x, y);
-                    tile50.rotate(rot*90, true, false);
-                } else if(rot!=1) {
-                    tile.rotate(rot*90, true, false);
-                    board[y][x] = tile;
-                } else {
-                    tiles.add(tile);
+                for (int i=0;i<50;i++) {
+                    String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
+                    String name = in.next();
+                    int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
+                    tile = new Tile(letter, name, rot, x, y);
+                    if (rot != -1) {
+                        tile.rotate(rot*90, true, false);
+                        board[y][x] = tile;
+                    }
+                    else {
+                        tiles.add(tile);
+                    }
                 }
+                tile50 = tiles.pop();
+                Collections.shuffle(tiles);
+            } else {
+
+                in = new Scanner(new File("saveGame.txt"));
+                in.useDelimiter(",");
+
+                for (int i=0;i<50;i++) {
+                    String letter = in.next().replaceAll("\n", "").replaceAll("\r", "");
+
+                    String name = in.next();
+                    int rot = in.nextInt(), y = in.nextInt(), x = in.nextInt();
+                    tile = new Tile(letter, name, rot, x, y);
+
+                    if (i == 49) {
+                        tile50 = new Tile(letter, name, rot, x, y);
+                        tile50.rotate(rot*90, true, false);
+                    } else if (rot != -1) {
+                        tile.rotate(rot*90, true, false);
+                        board[y][x] = tile;
+                    }
+                    else {
+                        tiles.add(tile);
+                    }
+
+                }
+
             }
 
-		    if(!LabyrinthGUI.continueGame) {
-		        tile50 = tiles.pop();
-		        Collections.shuffle(tiles);
-            }
             for (int i=1;i<=maxN;i++) {
                 for (int j=1;j<=maxN;j++) {
                     if(board[i][j]==null) {
@@ -61,7 +82,7 @@ public class Board {
             y = x = maxN+1;
             tile50.setDown(y); tile50.setLeft(x);
             board[y][x] = tile50;
-        } catch(FileNotFoundException e)  {
+        } catch (FileNotFoundException e) {
             System.out.println("ERROR. File not found.");
         }
 	}
