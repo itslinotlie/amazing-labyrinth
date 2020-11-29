@@ -510,7 +510,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+				winners.add(players.get(0));
 				dispose();
 				new EndScreenGUI(winners);
 				Thread.currentThread().stop();

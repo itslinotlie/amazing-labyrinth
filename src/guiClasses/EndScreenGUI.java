@@ -1,5 +1,6 @@
 package guiClasses;
 
+import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -13,7 +14,10 @@ public class EndScreenGUI extends JFrame {
 
     private JPanel bg = new JPanel();
 
+    private ArrayList<Player> winners;
+
     public EndScreenGUI(ArrayList<Player> winners) {
+        this.winners = winners;
         createPanel();
         createFrame();
     }
@@ -24,20 +28,28 @@ public class EndScreenGUI extends JFrame {
         gameSetupBackground.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         gameSetupBackground.setIcon(new ImageIcon("./res/gui-images/windows.jpg"));
 
-        for (int i=0;i<3;i++) {
+        for (int i=0;i<Math.min(3, winners.size());i++) {
             player[i] = new JLabel();
-            player[i].setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player"+i+".png").getImage().getScaledInstance(200, 200, 0)));
+            player[i].setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player"+colorToInt(winners.get(i).getColour())+".png").getImage().getScaledInstance(200, 200, 0)));
         }
-        player[0].setBounds(360, 50, 500, 500);
-        player[1].setBounds(160, 130, 500, 500);
-        player[2].setBounds(560, 160, 500, 500);
+
+//        for (int i=0;i<3;i++) {
+//            player[i] = new JLabel();
+//            player[i].setIcon(new ImageIcon(new ImageIcon("./res/gui-images/player"+i+".png").getImage().getScaledInstance(200, 200, 0)));
+//        }
+        for (int i=0;i<Math.min(3, winners.size());i++) {
+            if(i==0) player[0].setBounds(360, 50, 500, 500);
+            else if(i==1) player[1].setBounds(160, 130, 500, 500);
+            else if(i==2) player[2].setBounds(560, 160, 500, 500);
+        }
+
 
         decor.setIcon(new ImageIcon("./res/gui-images/confetti.png"));
         decor.setBounds(50, 0, 1000, 300);
 
         bg.add(decor);
 
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<Math.min(3, winners.size());i++) {
             bg.add(player[i]);
         }
 
@@ -57,5 +69,12 @@ public class EndScreenGUI extends JFrame {
         setResizable(false);
         setVisible(true);
         repaint();
+    }
+    private int colorToInt(Color color) {
+        if(color==Color.RED) return 0;
+        else if(color==Color.BLUE) return 1;
+        else if(color==Color.YELLOW) return 2;
+//        if(color==Color.GREEN) return 3;
+        else return 3;
     }
 }

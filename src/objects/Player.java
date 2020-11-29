@@ -22,6 +22,7 @@ public class Player {
 		this.setX(x);
 		this.setY(y);
 		this.playing = playing;
+		System.out.println(Arrays.toString(hand));
 	}
 
 	public boolean[] getFound() {
