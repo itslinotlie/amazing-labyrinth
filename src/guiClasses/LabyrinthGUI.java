@@ -20,7 +20,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	private static final int SCREEN_WIDTH = 900, SCREEN_HEIGHT = 655, TILE_SIZE = 520/7;
 	
 	private int numCards;
-	private int turn = 0, mxn = 7;
+	private int turn = 0, prev = -1, mxn = 7;
 	
 	public static boolean continueGame;
 
@@ -234,6 +234,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		
 		for (JButton shift : shiftTilesButtons)
 			shift.setEnabled(true);
+		if(prev!=-1) shiftTilesButtons[prev].setEnabled(false);
 		
 		endTurnButton.setEnabled(false);
 		
@@ -330,7 +331,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 	}
 
 	public void shift(int parity, int letter, int magnitude) {
-		
+
 		playerPanel.remove(boardObj.getFreeTile());
 		gamePanel.add(boardObj.getFreeTile());
 
@@ -342,8 +343,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 
 		boardObj.shiftTile(p, n, magnitude);
 
-		System.out.printf("%d %d %d\n", parity, letter, magnitude);
-		System.out.println(players.get(turn-1).getX()+" | "+magnitude);
 		for (int i=0;i<players.size();i++) {
 		    if(letter==0 && players.get(i).getX()==magnitude) {
                 if(parity==0) movePlayer(2, i);
@@ -524,7 +523,6 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 			}
 		}
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == endTurnButton) {
@@ -535,19 +533,14 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		for (int i = 0; i < shiftTilesButtons.length; i++) {
 			if (event.getSource() == shiftTilesButtons[i]) {
 				shift((i/3)%3, (i/3)%2, 2*(i%3)+2);
-				
+				prev = (i+6)%shiftTilesButtons.length;
 				for (JButton shift : shiftTilesButtons)
 					shift.setEnabled(false);
-				
 				endTurnButton.setEnabled(true);
 				highlightBoard();
 			}	
 		}
 	}
-	@Override
-	public void keyTyped(KeyEvent key) {
-	}
-	
 	@Override
 	public void keyPressed(KeyEvent key) {
         int keys[] = {
@@ -568,6 +561,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		}
 	}
 	@Override
-	public void keyReleased(KeyEvent e) {	
-	}
+	public void keyReleased(KeyEvent e) {}
+    @Override
+    public void keyTyped(KeyEvent key) {}
 }
