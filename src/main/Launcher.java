@@ -34,7 +34,7 @@ import guiClasses.StartScreenGUI;
  *   -The use of Git as a version control system
  *
  * Areas of Concern:
- *   -Some tile images are not aligned with others, making the board seem “off”
+ *   -Some tile images are not aligned with others, making the board seem off
  *   -Players cannot be fully customizable (i.e. player name, icon etc.)
  */
 public class Launcher {

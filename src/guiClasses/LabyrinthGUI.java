@@ -706,7 +706,7 @@ public class LabyrinthGUI extends JFrame implements KeyListener, ActionListener{
 		    int y1 = players.get(turn-1).getY(), y2 = y1 + move[i/2][0];
 		    int x1 = players.get(turn-1).getX(), x2 = x1 + move[i/2][1];
 		    if(y2<=0 || y2>mxn || x2<=0 || x2>mxn) continue;
-		    if(key.getKeyCode()==keys[i] && time==0 && boardObj.canMove(y1, x1, y2, x2, i/2)) {
+		    if(key.getKeyCode()==keys[i] && time==0 && boardObj.canMove(y1, x1, y2, x2, i/2) && endTurnButton.isEnabled()) {
                 movePlayer(i/2, turn-1);
             }
 		}
