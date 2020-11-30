@@ -1,5 +1,8 @@
 /* Names:
  * Eric Lin(33%), Michael Li(33%), Zain Muhammad(33%)
+ * Eric Lin - GUI
+ * Michael Li - logic & management
+ * Zain Muhammad - classes/objects
  * 
  * Date:
  * November 29, 2020
@@ -31,7 +34,9 @@
  *      - 
  * 
  * Areas of Concern: 
- * 		- 
+ * 		- the size of our game is roughly 10mb, and should be able to run on almost all systems thanks
+ *        to the low system requirements to run the game.
+ *      - 
  * 
  */
 package main;
