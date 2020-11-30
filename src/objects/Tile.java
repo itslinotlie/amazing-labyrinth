@@ -7,14 +7,18 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+/**
+ * Models the tiles that will be placed on a board
+ */
 public class Tile extends JLabel {
+    private BufferedImage image, copy;
+
 	private String item, type, head = new File("").getAbsolutePath()+"/res/tile-images/"; //item: bat, dragon etc | type: I, L, T
 	private int left, down;
 	private double angle = 0;
-	private BufferedImage image, copy;
 	private boolean move[] = new boolean[4];
 
-	//e.g. I/L/T, Monkey, false (might delete), 0/1/2/3, [1, 7], [1, 7]
+	//initializes the tile
 	public Tile(String type, String item, int orientation, int left, int down) {
 		this.type = type;
 		this.item = item;
@@ -27,7 +31,7 @@ public class Tile extends JLabel {
 			System.out.println(item+" had a problem loading");
 		}
 
-		orientation = Math.max(0, orientation); //this is because non-movable tiles default at -1 for orientation
+		orientation = Math.max(0, orientation); //this is because non-movable tiles default as -1 for orientation
 		if(type.equals("I")) {
 			for (int i=0;i<=2;i+=2) {
 				move[(orientation+i)%4] = true;
@@ -42,6 +46,9 @@ public class Tile extends JLabel {
 			}
 		}
 	}
+
+	//rotates the tile by a given angle in both directions
+    //also provides the option of not changing the move array
 	public void rotate(double ang, boolean sum, boolean change) {
 		if(sum) angle+=ang;
 		else angle-=ang;
@@ -59,6 +66,8 @@ public class Tile extends JLabel {
 			move = temporary.clone();
 		}
 	}
+
+	//actually rotates the BufferedImage
 	public BufferedImage rotateImage(BufferedImage image, double angle) {
 		double rad = Math.toRadians(angle), sin = Math.abs(Math.sin(rad)), cos = Math.abs(Math.cos(rad));
 		int w = image.getWidth(), h = image.getHeight();
@@ -75,33 +84,43 @@ public class Tile extends JLabel {
 		g2d.dispose();
 		return rot; //return the newly rotated BufferedImage
 	}
+
 	public String getName() {
 		return item;
 	}
+
 	public BufferedImage getImage() {
 		return copy;
 	}
+
 	public boolean[] getMove() {
 		return move;
 	}
+
 	public double getAngle() {
 		return angle;
 	}
+
 	public int getLeft() {
 		return left;
 	}
+
 	public void setLeft(int left) {
 		this.left = left;
 	}
+
 	public int getDown() {
 		return down;
 	}
+
 	public void setDown(int down) {
 		this.down = down;
 	}
+
 	public String getType() {
 		return type;
 	}
+
 	@Override
 	public String toString() {
 		return "Tile [type=" + type + ", item=" + item + ", x=" + left + ", y=" + down + "]";
